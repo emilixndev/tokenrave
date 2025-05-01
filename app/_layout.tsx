@@ -1,5 +1,7 @@
 import { Stack } from 'expo-router';
 import { SQLiteDatabase, SQLiteProvider } from 'expo-sqlite';
+import { createTamagui,TamaguiProvider, View } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v4'
 
 export default function RootLayout() {
   const createDB = async (db: SQLiteDatabase) => {
@@ -18,13 +20,17 @@ export default function RootLayout() {
                             NULL
                         );`);
   };
+
+  const config = createTamagui(defaultConfig)
   return (
-    <SQLiteProvider databaseName="tokenrave.db" onInit={createDB}>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
-    </SQLiteProvider>
+    <TamaguiProvider config={config}>
+      <SQLiteProvider databaseName="tokenrave.db" onInit={createDB}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      </SQLiteProvider>
+    </TamaguiProvider>
   );
 }

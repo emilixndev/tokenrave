@@ -1,8 +1,10 @@
 import { Link, router } from 'expo-router';
-import { Button, Pressable, Text, View, StyleSheet } from 'react-native';
+import { Pressable, Text, View, StyleSheet } from 'react-native';
 import { navigate } from 'expo-router/build/global-state/routing';
 import { SQLiteDatabase, useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
+import { CardProps, ScrollView } from 'tamagui';
+import { Button, Card, H2, Image, Paragraph, XStack } from 'tamagui';
 
 export default function Index() {
   const database = useSQLiteContext();
@@ -22,7 +24,8 @@ export default function Index() {
   }, []);
   return (
     <View>
-      {events ? (
+      <ScrollView>
+      {events.length > 0 ? (
         events.map((value: any) => (
           <View key={value.id}>
             <Link
@@ -32,25 +35,28 @@ export default function Index() {
                 params: { id: value.id },
               }}
             >
-              <Text>{value.name}</Text>
+              <Card elevate size="$1" style={styles.card}>
+                <Card.Header padded>
+                  <H2 textAlign="center">{value.name} </H2>
+                </Card.Header>
+              </Card>
             </Link>
           </View>
         ))
       ) : (
-        <Text>RIEN</Text>
+        <Button style={styles.addBtn}>Add event</Button>
       )}
-      ;
+      </ScrollView>
     </View>
   );
 }
 const styles = StyleSheet.create({
   card: {
-    borderStyle: 'solid',
-    borderColor: 'black',
-    borderWidth: 2,
     textAlign: 'center',
     padding: 15,
-    margin: 15,
-    borderRadius: 10,
+    width:'100%'
+  },
+  addBtn: {
+    marginTop: 100,
   },
 });
