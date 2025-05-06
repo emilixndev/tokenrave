@@ -12,8 +12,8 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
   const database = useSQLiteContext();
 
   function addEvent() {
-    database.runSync(`INSERT INTO events (name)
-                      VALUES ('${nameTxt}')`);
+    database.runSync(`INSERT INTO events (name,token_count,token_price,total_price)
+                      VALUES ('${nameTxt}',0,0,0)`);
     onEventAdded && onEventAdded();
   }
 

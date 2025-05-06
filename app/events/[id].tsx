@@ -8,10 +8,9 @@ import { X } from '@tamagui/lucide-icons';
 export default function Index() {
   const { id, limit } = useLocalSearchParams();
   const database = useSQLiteContext();
-  const [token, setToken] = useState<number>(0);
   const [tokenInput, setTokenInput] = useState<number>(0);
+  const [tokenExpenseInput, setTokenExpenseInput] = useState<number>(0);
   const [priceInput, setPriceInput] = useState<number>(0);
-  const [price, setPrice] = useState<number>(0);
 
   const [event, setEvent] = useState<any>([]);
   useEffect(() => {
@@ -24,6 +23,27 @@ export default function Index() {
                                                  WHERE id = ${id}`);
     setEvent(eventSelected);
     console.log(eventSelected);
+  }
+
+  function addToken() {
+    database.runSync(`UPDATE events
+                      set token_count = token_count + ${tokenInput},
+                          total_price = total_price + ${priceInput}`);
+    database.runSync(`UPDATE events
+                      set token_price = total_price / token_count`);
+    setTokenInput(0);
+    setPriceInput(0);
+    getEvent();
+  }
+
+  function saveExpense() {
+    database.runSync(`UPDATE events
+                      set token_count = ${event.token_count - tokenExpenseInput},
+                          total_price = total_price - ${tokenExpenseInput * event.token_price}`);
+
+    setTokenExpenseInput(0);
+
+    getEvent();
   }
 
   return (
@@ -61,11 +81,10 @@ export default function Index() {
         </Tabs.List>
 
         <Tabs.Content value="tab1">
-          <Text>{price} €</Text>
-          <Text>{token} Tokens</Text>
-          <Text>{price/token}€ = 1 Token</Text>
-          <Text>Event {event.name}</Text>
-          <Text>Token</Text>
+          <Text>Event name : {event.name}</Text>
+          <Text>{event.total_price} €</Text>
+          <Text>{event.token_count} Tokens</Text>
+          <Text>1 Token = {Math.round(event.token_price * 100) / 100}€ </Text>
           <Dialog modal>
             <Dialog.Trigger asChild>
               <Button>Add Token</Button>
@@ -114,6 +133,7 @@ export default function Index() {
                     Number of token :
                   </Label>
                   <Input
+                    keyboardType={'numeric'}
                     flex={1}
                     id="number_token"
                     placeholder="xx"
@@ -127,9 +147,15 @@ export default function Index() {
                   <Label justifyContent="flex-end" htmlFor="name">
                     Price in € :
                   </Label>
-                  <Input flex={1} id="price_token" placeholder="xx,xx"   onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                    setPriceInput(parseFloat(e.nativeEvent.text));
-                  }} />
+                  <Input
+                    keyboardType={'numeric'}
+                    flex={1}
+                    id="price_token"
+                    placeholder="xx,xx"
+                    onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                      setPriceInput(parseFloat(e.nativeEvent.text));
+                    }}
+                  />
                 </Fieldset>
 
                 <XStack alignSelf="flex-end" gap="$4">
@@ -138,8 +164,7 @@ export default function Index() {
                       theme="accent"
                       aria-label="Close"
                       onPress={() => {
-                        setToken(token + tokenInput);
-                        setPrice(price + priceInput);
+                        addToken();
                       }}
                     >
                       Save changes
@@ -197,30 +222,24 @@ export default function Index() {
                 exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
                 gap="$4"
               >
-                <Dialog.Title>Add token</Dialog.Title>
-                <Dialog.Description>Add token to your wallet</Dialog.Description>
+                <Dialog.Title>Add expense</Dialog.Title>
+                <Dialog.Description>Consume token from your wallet</Dialog.Description>
                 <Fieldset gap="$4" horizontal>
                   <Label justifyContent="flex-end" htmlFor="name">
                     Number of token :
                   </Label>
                   <Input
+                    keyboardType={'numeric'}
                     flex={1}
                     id="number_token"
                     placeholder="xx"
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                      setTokenInput(parseInt(e.nativeEvent.text));
+                      setTokenExpenseInput(parseInt(e.nativeEvent.text));
                     }}
                   />
                 </Fieldset>
 
-                <Fieldset gap="$4" horizontal>
-                  <Label justifyContent="flex-end" htmlFor="name">
-                    Price in € :
-                  </Label>
-                  <Input flex={1} id="price_token" placeholder="xx,xx"   onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                    setPriceInput(parseFloat(e.nativeEvent.text));
-                  }} />
-                </Fieldset>
+                <Text>Your expense represent {tokenExpenseInput * event.token_price} €</Text>
 
                 <XStack alignSelf="flex-end" gap="$4">
                   <Dialog.Close displayWhenAdapted asChild>
@@ -228,11 +247,10 @@ export default function Index() {
                       theme="accent"
                       aria-label="Close"
                       onPress={() => {
-                        setToken(token + tokenInput);
-                        setPrice(price + priceInput);
+                        saveExpense();
                       }}
                     >
-                      Save changes
+                      Save
                     </Button>
                   </Dialog.Close>
                 </XStack>

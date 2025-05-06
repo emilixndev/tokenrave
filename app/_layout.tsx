@@ -17,7 +17,10 @@ export default function RootLayout() {
                             name
                             TEXT
                             NOT
-                            NULL
+                            NULL,
+                            token_count INTEGER NOT NULL,
+                            token_price FLOAT NOT NULL,
+                            total_price FLOAT NOT NULL
                         );`);
   };
 
