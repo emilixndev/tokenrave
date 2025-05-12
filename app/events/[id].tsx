@@ -28,9 +28,22 @@ export default function Index() {
   const [priceInput, setPriceInput] = useState<number>(0);
 
   const [event, setEvent] = useState<any>([]);
+  const [history, setHistory] = useState<any>([]);
   useEffect(() => {
     getEvent();
   }, []);
+
+  useEffect(() => {
+    getHistory();
+  }, []);
+
+  function getHistory() {
+    const historySelected = database.getAllSync(`SELECT *
+                                                 FROM history
+                                                 WHERE events_reference = ${id}`);
+    setHistory(historySelected);
+    console.log(historySelected);
+  }
 
   function getEvent() {
     const eventSelected = database.getFirstSync(`SELECT *
@@ -52,12 +65,14 @@ export default function Index() {
   }
 
   function saveExpense() {
+    database.runSync(`INSERT INTO history (created_at, amount, events_reference)
+                      values (${Date.now()}, ${tokenExpenseInput}, ${id})`);
     database.runSync(`UPDATE events
                       set token_count = ${event.token_count - tokenExpenseInput},
                           total_price = total_price - ${tokenExpenseInput * event.token_price}`);
 
     setTokenExpenseInput(0);
-
+    getHistory();
     getEvent();
   }
 
@@ -121,7 +136,6 @@ export default function Index() {
                 enterStyle={{ opacity: 0, scale: 0.95 }}
                 exitStyle={{ opacity: 0 }}
               />
-
               <Dialog.Content
                 bordered
                 width="95%"
@@ -283,7 +297,17 @@ export default function Index() {
           </Dialog>
         </Tabs.Content>
         <Tabs.Content value="tab2">
-          <H5>Tab 2</H5>
+          {history ? (
+            history.map((value: any) => (
+              <View key={value.id}>
+                <Text>{value.amount} Token </Text>
+                <Text>{new Date(value.created_at).toLocaleDateString('fr-FR')}</Text>
+                <Separator></Separator>
+              </View>
+            ))
+          ) : (
+            <Text>No history</Text>
+          )}
         </Tabs.Content>
       </Tabs>
     </View>
