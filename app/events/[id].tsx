@@ -1,9 +1,24 @@
 import { useLocalSearchParams } from 'expo-router';
-import { View, Text, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
+import { NativeSyntheticEvent, TextInputChangeEventData, StyleSheet } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { Button, Dialog, Fieldset, H5, Input, Label, Separator, SizableText, Tabs, Unspaced, XStack } from 'tamagui';
-import { X } from '@tamagui/lucide-icons';
+import {
+  Button,
+  Dialog,
+  Fieldset,
+  H5,
+  Input,
+  Label,
+  Separator,
+  SizableText,
+  Tabs,
+  Unspaced,
+  View,
+  XStack,
+  Text,
+} from 'tamagui';
+import { Airplay, Badge, X } from '@tamagui/lucide-icons';
+import ButtonWithBadge from '@/app/components/common/ButtonWithBadge';
 
 export default function Index() {
   const { id, limit } = useLocalSearchParams();
@@ -240,6 +255,9 @@ export default function Index() {
                 </Fieldset>
 
                 <Text>Your expense represent {tokenExpenseInput * event.token_price} €</Text>
+                <XStack gap="$3">
+                  <ButtonWithBadge />
+                </XStack>
 
                 <XStack alignSelf="flex-end" gap="$4">
                   <Dialog.Close displayWhenAdapted asChild>
