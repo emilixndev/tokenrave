@@ -4,26 +4,17 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Card, H2, ScrollView } from 'tamagui';
 import AddEventButton from '@/app/components/home/AddEventButton';
+import { getAllEvents } from '@/db/repositories/eventRepository';
+import { EventType } from '@/db/types/eventType'
 
 export default function Index() {
   const database = useSQLiteContext();
 
   const [events, setEvents] = useState<any>([]);
-  useEffect(() => {
-    // database.runSync(`INSERT INTO events (name)
-    //                   VALUES ('test')`);
-    // database.runSync(`INSERT INTO events (name)
-    //                   VALUES ('test')`);
-    let eventsTest = database.getAllSync(`SELECT *
-                                          FROM events`);
-    console.log(eventsTest);
-    setEvents(eventsTest);
-    console.log(events);
-  }, []);
 
-  function fetchEvents() {
-    let eventsTest = database.getAllSync(`SELECT *
-                                          FROM events`);
+
+  async function fetchEvents() {
+    const eventsTest = await getAllEvents(database);
     setEvents(eventsTest);
   }
 
@@ -35,7 +26,7 @@ export default function Index() {
     <View>
       <ScrollView>
         {events.length > 0 ? (
-          events.map((value: any) => (
+          events.map((value: EventType) => (
             <View key={value.id}>
               <Link
                 style={styles.card}
