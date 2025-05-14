@@ -2,8 +2,8 @@ import { Button, Dialog, Fieldset, Input, Label, Text, Unspaced, XStack } from '
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 import { X } from '@tamagui/lucide-icons';
 import ButtonWithBadge from '@/components/common/ButtonWithBadge';
-import AddTokenModal from '@/components/modals /AddTokenModal';
-import AddExpenseModal from '@/components/modals /AddExpenseModal';
+import AddTokenModal from '../../components/modals/AddTokenModal';
+import AddExpenseModal from '../../components/modals/AddExpenseModal';
 import { EventType } from '@/db/types/eventType';
 
 interface TokenListProps {
