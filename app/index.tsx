@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Card, H2, ScrollView } from 'tamagui';
-import AddEventButton from '@/app/components/home/AddEventButton';
+import AddEventButton from '@/components/home/AddEventButton';
 import { getAllEvents } from '@/db/repositories/eventRepository';
 import { EventType } from '@/db/types/eventType'
 
