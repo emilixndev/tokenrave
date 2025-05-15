@@ -10,7 +10,7 @@ import TokensGrid from '@/components/EventTokens/TokensGrid';
 interface TokenListProps {
   event: EventType | null;
   setTokenExpenseInput: (token: number) => void;
-  tokenExpenseInput:  number;
+  tokenExpenseInput: number;
   saveExpense: (tokenExpenseCount: number) => void;
   setTokenInput: (token: number) => void;
   setPriceInput: (price: number) => void;
@@ -95,10 +95,15 @@ export default function TokenList({
           ></AddTokenModal>
           {event &&
             (tokenCounter !== 0 ? (
-              <Button onPress={() => {saveNewExpense()}}>Add expense</Button>
-            ) : (
-              <Button disabled opacity={0.5}
+              <Button
+                onPress={() => {
+                  saveNewExpense();
+                }}
               >
+                Add expense
+              </Button>
+            ) : (
+              <Button disabled opacity={0.5}>
                 Add expense
               </Button>
             ))}

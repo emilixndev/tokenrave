@@ -5,7 +5,6 @@ import { X } from '@tamagui/lucide-icons';
 import EventTarget from 'event-target-shim';
 import { EventType } from '@/db/types/eventType';
 
-
 interface addTokenModalProps {
   event: EventType;
   setTokenExpenseInput: (token: number) => void;
@@ -13,8 +12,12 @@ interface addTokenModalProps {
   saveExpense: () => void;
 }
 
-
-export default function AddExpenseModal({event,setTokenExpenseInput,tokenExpenseInput,saveExpense}: addTokenModalProps) {
+export default function AddExpenseModal({
+  event,
+  setTokenExpenseInput,
+  tokenExpenseInput,
+  saveExpense,
+}: addTokenModalProps) {
   return (
     <>
       <Dialog modal>

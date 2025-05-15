@@ -9,11 +9,7 @@ interface addTokenModalProps {
   addToken: () => void;
 }
 
-export default function AddTokenModal({
-  setTokenInput,
-  setPriceInput,
-  addToken,
-}: addTokenModalProps) {
+export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }: addTokenModalProps) {
   return (
     <>
       <Dialog modal>

@@ -27,7 +27,7 @@ export const updateTokenAmountAndTotalPrice = async (
                                 total_price = total_price + ${totalPrice}
                             WHERE events.id = ${id}`);
 };
-export const updateTokenPrice = async (db: SQLiteDatabase,id:number): Promise<SQLiteRunResult> => {
+export const updateTokenPrice = async (db: SQLiteDatabase, id: number): Promise<SQLiteRunResult> => {
   return await db.runAsync(`UPDATE events
                             set token_price = total_price / token_count
                             WHERE events.id = ${id}`);

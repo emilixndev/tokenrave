@@ -5,13 +5,12 @@ import { useEffect, useState } from 'react';
 import { Card, H2, ScrollView } from 'tamagui';
 import AddEventButton from '@/components/home/AddEventButton';
 import { getAllEvents } from '@/db/repositories/eventRepository';
-import { EventType } from '@/db/types/eventType'
+import { EventType } from '@/db/types/eventType';
 
 export default function Index() {
   const database = useSQLiteContext();
 
   const [events, setEvents] = useState<any>([]);
-
 
   async function fetchEvents() {
     const eventsTest = await getAllEvents(database);
