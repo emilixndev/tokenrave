@@ -1,21 +1,21 @@
 import { Button } from 'tamagui';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface TokensProps {
   addTokenToCounter: () => void;
   removeTokenToCounter: () => void;
-  resetSelectionKey: number;
+  resetSelection: boolean;
 }
 
-export default function Tokens({ addTokenToCounter, removeTokenToCounter, resetSelectionKey }: TokensProps) {
+export default function Tokens({ addTokenToCounter, removeTokenToCounter, resetSelection }: TokensProps) {
   const [pressed, setPressed] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setPressed(false);
-  }, [resetSelectionKey]);
+  }, [resetSelection]);
 
   function handlePress() {
-    setPressed(!pressed)
+    setPressed(!pressed);
     pressed ? removeTokenToCounter() : addTokenToCounter();
   }
 

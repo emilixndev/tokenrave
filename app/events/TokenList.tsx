@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, ScrollView, Text, View } from 'tamagui';
 import AddTokenModal from '../../components/modals/AddTokenModal';
 import AddExpenseModal from '../../components/modals/AddExpenseModal';
@@ -27,12 +27,12 @@ export default function TokenList({
   addToken,
 }: TokenListProps) {
   const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter } = useTokenSelection();
-  const [resetSelectionKey, setResetSelectionKey] = React.useState(0);
+  const [resetSelection, setResetSelection] = useState(false);
 
   function saveNewExpense() {
     saveExpense(tokenCounter);
     resetTokenCounter();
-    setResetSelectionKey(prev => prev + 1);
+    setResetSelection(!resetSelection);
   }
   return (
     <View flex={1}>
@@ -57,7 +57,7 @@ export default function TokenList({
               numberOfTokens={event.token_count}
               addTokenToCounter={addTokenToCounter}
               removeTokenToCounter={removeTokenToCounter}
-              resetSelectionKey={resetSelectionKey}
+              resetSelection={resetSelection}
             ></TokensGrid>
           </>
         )}
@@ -94,7 +94,7 @@ export default function TokenList({
             setPriceInput={setPriceInput}
           ></AddTokenModal>
           {event &&
-            (event.token_count !== 0 ? (
+            (tokenCounter !== 0 ? (
               <Button onPress={() => {saveNewExpense()}}>Add expense</Button>
             ) : (
               <Button disabled opacity={0.5}
