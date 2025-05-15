@@ -10,11 +10,16 @@ const useTokenSelection = () => {
   function removeTokenToCounter() {
     setTokenCounter(tokenCounter - 1);
   }
+  function resetTokenCounter() {
+    setTokenCounter(0);
+  }
 
   return {
     tokenCounter,
     addTokenToCounter,
-    removeTokenToCounter}
+    removeTokenToCounter,
+    resetTokenCounter
+  }
 }
 
 export default useTokenSelection;

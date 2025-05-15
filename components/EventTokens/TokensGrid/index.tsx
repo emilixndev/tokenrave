@@ -7,9 +7,10 @@ interface TokensGridProps {
   numberOfTokens: number;
   addTokenToCounter: () => void;
   removeTokenToCounter: () => void;
+  resetSelectionKey: number;
 }
 
-export default function TokensGrid({ numberOfTokens, removeTokenToCounter, addTokenToCounter }: TokensGridProps) {
+export default function TokensGrid({ numberOfTokens, removeTokenToCounter, addTokenToCounter, resetSelectionKey }: TokensGridProps) {
   return (
     <View marginTop="$4" paddingHorizontal="$2" alignItems="center">
       {[...Array(Math.ceil(numberOfTokens / 5))].map((x, i) =>
@@ -18,9 +19,10 @@ export default function TokensGrid({ numberOfTokens, removeTokenToCounter, addTo
             numberOfTokensPerLine={numberOfTokens % 5}
             removeTokenToCounter={removeTokenToCounter}
             addTokenToCounter={addTokenToCounter}
+            resetSelectionKey={resetSelectionKey}
           ></TokensRow>
         ) : (
-          <TokensRow numberOfTokensPerLine={5} removeTokenToCounter={removeTokenToCounter} addTokenToCounter={addTokenToCounter} key={i}></TokensRow>
+          <TokensRow numberOfTokensPerLine={5} removeTokenToCounter={removeTokenToCounter} addTokenToCounter={addTokenToCounter} resetSelectionKey={resetSelectionKey} key={i}></TokensRow>
         )
       )}
     </View>

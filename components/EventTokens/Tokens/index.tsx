@@ -4,10 +4,15 @@ import React, { useState } from 'react';
 interface TokensProps {
   addTokenToCounter: () => void;
   removeTokenToCounter: () => void;
+  resetSelectionKey: number;
 }
 
-export default function Tokens({ addTokenToCounter, removeTokenToCounter }: TokensProps) {
+export default function Tokens({ addTokenToCounter, removeTokenToCounter, resetSelectionKey }: TokensProps) {
   const [pressed, setPressed] = useState(false);
+
+  React.useEffect(() => {
+    setPressed(false);
+  }, [resetSelectionKey]);
 
   function handlePress() {
     setPressed(!pressed)

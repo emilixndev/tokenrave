@@ -26,13 +26,13 @@ export default function TokenList({
   setPriceInput,
   addToken,
 }: TokenListProps) {
-  const { addTokenToCounter, removeTokenToCounter, tokenCounter } = useTokenSelection();
-
+  const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter } = useTokenSelection();
+  const [resetSelectionKey, setResetSelectionKey] = React.useState(0);
 
   function saveNewExpense() {
     saveExpense(tokenCounter);
-
-
+    resetTokenCounter();
+    setResetSelectionKey(prev => prev + 1);
   }
   return (
     <View flex={1}>
@@ -57,6 +57,7 @@ export default function TokenList({
               numberOfTokens={event.token_count}
               addTokenToCounter={addTokenToCounter}
               removeTokenToCounter={removeTokenToCounter}
+              resetSelectionKey={resetSelectionKey}
             ></TokensGrid>
           </>
         )}
