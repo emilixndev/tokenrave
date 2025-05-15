@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button, ScrollView, Text, View } from 'tamagui';
 import AddTokenModal from '../../components/modals/AddTokenModal';
 import AddExpenseModal from '../../components/modals/AddExpenseModal';
 import { EventType } from '@/db/types/eventType';
 import { StyleSheet } from 'react-native';
+import useTokenSelection from '@/hooks/useTokenSelection';
+import TokensGrid from '@/components/EventTokens/TokensGrid';
 
 interface TokenListProps {
   event: EventType | null;
   setTokenExpenseInput: (token: number) => void;
-  tokenExpenseInput: number;
-  saveExpense: () => void;
+  tokenExpenseInput:  number;
+  saveExpense: (tokenExpenseCount: number) => void;
   setTokenInput: (token: number) => void;
   setPriceInput: (price: number) => void;
   addToken: () => void;
@@ -24,9 +26,16 @@ export default function TokenList({
   setPriceInput,
   addToken,
 }: TokenListProps) {
+  const { addTokenToCounter, removeTokenToCounter, tokenCounter } = useTokenSelection();
+
+
+  function saveNewExpense() {
+    saveExpense(tokenCounter);
+
+
+  }
   return (
     <View flex={1}>
-      {/* Content area now scrollable */}
       <ScrollView flex={1} contentContainerStyle={{ paddingBottom: '$14' }}>
         {event && (
           <>
@@ -35,65 +44,40 @@ export default function TokenList({
             </Text>
             <View flexDirection="row" width="100%" paddingHorizontal="$2">
               <View flex={1}>
-                <Text textAlign="left">{event.total_price} €</Text>
+                <Text textAlign="left">{Math.round(event.total_price * 100) / 100} €</Text>
               </View>
               <View flex={1}>
-                <Text textAlign="center">
-                  {event.token_count} T
-
-                </Text>
+                <Text textAlign="center">{event.token_count} T</Text>
               </View>
               <View flex={1}>
                 <Text textAlign="right">1T/{Math.round(event.token_price * 100) / 100}€ </Text>
               </View>
             </View>
-
-            {/* New Button Grid */}
-            <View marginTop="$4" paddingHorizontal="$2" alignItems="center">
-              {Array.from({ length: 18 }, (_, i) => i).map((rowIndex) => (
-                <View
-                  key={`row-${rowIndex}`}
-                  flexDirection="row"
-                  justifyContent="center"
-                  width="100%"
-                  marginBottom="$1.5"
-                >
-                  {[0, 1, 2, 3, 4].map((buttonIndex) => (
-                    <Button
-                      paddingVertical="$2.5"
-                      paddingHorizontal="$3.5"
-                      borderWidth={1}
-                      key={`button-${rowIndex}-${buttonIndex}`}
-                      borderRadius="$4"
-                      alignItems="center"
-                      justifyContent="center"
-                      backgroundColor="$color5"
-                      marginHorizontal="$1"
-                      fontSize="$6"
-                    >
-                      $
-                    </Button>
-
-                  ))}
-                </View>
-              ))}
-            </View>
+            <TokensGrid
+              numberOfTokens={event.token_count}
+              addTokenToCounter={addTokenToCounter}
+              removeTokenToCounter={removeTokenToCounter}
+            ></TokensGrid>
           </>
         )}
       </ScrollView>
 
       <View position="absolute" bottom="$0" left="$0" right="$0" width="100%">
-        <View
-          paddingVertical="$2"
-          paddingHorizontal="$3"
-          backgroundColor="$color6"
-          alignItems="center"
-          justifyContent="center"
-          borderTopWidth={1}
-          borderColor="$borderColor"
-        >
-          <Text fontSize="$5">3 Token / 10€</Text>
-        </View>
+        {tokenCounter > 0 && event && (
+          <View
+            paddingVertical="$2"
+            paddingHorizontal="$3"
+            backgroundColor="$color6"
+            alignItems="center"
+            justifyContent="center"
+            borderTopWidth={1}
+            borderColor="$borderColor"
+          >
+            <Text fontSize="$5">
+              {tokenCounter} Token / {Math.round(event.token_price * tokenCounter * 100) / 100}€
+            </Text>
+          </View>
+        )}
 
         <View
           flexDirection="row"
@@ -108,14 +92,15 @@ export default function TokenList({
             setTokenInput={setTokenInput}
             setPriceInput={setPriceInput}
           ></AddTokenModal>
-          {event && (
-            <AddExpenseModal
-              event={event}
-              saveExpense={saveExpense}
-              setTokenExpenseInput={setTokenExpenseInput}
-              tokenExpenseInput={tokenExpenseInput}
-            ></AddExpenseModal>
-          )}
+          {event &&
+            (event.token_count !== 0 ? (
+              <Button onPress={() => {saveNewExpense()}}>Add expense</Button>
+            ) : (
+              <Button disabled opacity={0.5}
+              >
+                Add expense
+              </Button>
+            ))}
         </View>
       </View>
     </View>

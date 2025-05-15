@@ -15,7 +15,6 @@ import {
 const useTokenManagement = (id:number) => {
   const database = useSQLiteContext();
   const [tokenInput, setTokenInput] = useState<number>(0);
-  const [tokenExpenseInput, setTokenExpenseInput] = useState<number>(0);
   const [priceInput, setPriceInput] = useState<number>(0);
 
   const [event, setEvent] = useState<EventType | null>(null);
@@ -48,23 +47,23 @@ const useTokenManagement = (id:number) => {
     await getEvent();
   }
 
-  function saveExpense() {
+  function saveExpense(tokenExpenseCount:number) {
     if (event) {
-      addExpenseToHistory(database, Date.now(), tokenExpenseInput, Number(id));
+      addExpenseToHistory(database, Date.now(), tokenExpenseCount, Number(id));
 
       updateTokenAmountAndTotalPriceWithExpense(
         database,
-        event.token_count - tokenExpenseInput,
-        tokenExpenseInput * event.token_price,
+        event.token_count - tokenExpenseCount,
+        tokenExpenseCount * event.token_price,
         Number(id)
       );
-      setTokenExpenseInput(0);
+
       getHistory();
       getEvent();
     }
   }
 
-  return {event, history, tokenInput, setTokenInput, tokenExpenseInput, setTokenExpenseInput, priceInput, setPriceInput, addToken, saveExpense};
+  return {event, history, tokenInput, setTokenInput, priceInput, setPriceInput, addToken, saveExpense};
 }
 
 export default useTokenManagement;

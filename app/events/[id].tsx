@@ -9,13 +9,9 @@ export default function Index() {
   const {
     event,
     history,
-    setTokenExpenseInput,
     setTokenInput,
     setPriceInput,
     saveExpense,
-    tokenExpenseInput,
-    tokenInput,
-    priceInput,
     addToken,
   } = useTokenManagement(Number(id));
   return (
@@ -55,12 +51,12 @@ export default function Index() {
         <Tabs.Content value="tab1" flex={1}>
           <TokenList
             event={event}
-            setTokenExpenseInput={setTokenExpenseInput}
-            tokenExpenseInput={tokenExpenseInput}
             saveExpense={saveExpense}
             setTokenInput={setTokenInput}
             setPriceInput={setPriceInput}
             addToken={addToken}
+            setTokenExpenseInput={saveExpense}
+            tokenExpenseInput={0}
           ></TokenList>
         </Tabs.Content>
         <Tabs.Content value="tab2" flex={1}>
