@@ -19,7 +19,7 @@ export default function Index() {
     addToken,
   } = useTokenManagement(Number(id));
   return (
-    <View>
+    <View flex={1}>
       <Tabs
         defaultValue="tab1"
         width="100%"
@@ -52,7 +52,7 @@ export default function Index() {
           </Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Content value="tab1">
+        <Tabs.Content value="tab1" flex={1}>
           <TokenList
             event={event}
             setTokenExpenseInput={setTokenExpenseInput}
@@ -63,7 +63,7 @@ export default function Index() {
             addToken={addToken}
           ></TokenList>
         </Tabs.Content>
-        <Tabs.Content value="tab2">
+        <Tabs.Content value="tab2" flex={1}>
           <HistoryList history={history}></HistoryList>
         </Tabs.Content>
       </Tabs>

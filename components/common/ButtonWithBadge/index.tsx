@@ -5,10 +5,9 @@ import { useState } from 'react';
 export default function ButtonWithBadge() {
   const [counter, setCounter] = useState(0);
 
-
   return (
     <View position="relative">
-      <Button icon={Airplay} onPress={() => setCounter(counter + 1)}/>
+      <Button icon={Airplay} onPress={() => setCounter(counter + 1)} />
       {counter > 0 && (
         <View
           position="absolute"
@@ -24,8 +23,8 @@ export default function ButtonWithBadge() {
           <Text color="white" fontSize={10} fontWeight="bold">
             {counter > 99 ? '99+' : counter}
           </Text>
-        </View>)}
-
+        </View>
+      )}
     </View>
   );
 }

@@ -6,7 +6,7 @@ interface HistoryListProps {
   history: HistoryType[];
 }
 
-export default function ( {history}: HistoryListProps) {
+export default function HistoryList ( {history}: HistoryListProps) {
   return (
     <>
       {history && history.length > 0 ? (
