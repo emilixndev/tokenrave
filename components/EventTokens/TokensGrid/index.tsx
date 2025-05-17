@@ -8,6 +8,7 @@ interface TokensGridProps {
   addTokenToCounter: () => void;
   removeTokenToCounter: () => void;
   resetSelection: boolean;
+  addHalfTokenToCounter: () => void;
 }
 
 export default function TokensGrid({
@@ -15,6 +16,7 @@ export default function TokensGrid({
   removeTokenToCounter,
   addTokenToCounter,
   resetSelection,
+  addHalfTokenToCounter,
 }: TokensGridProps) {
   return (
     <View marginTop="$4" paddingHorizontal="$2" alignItems="center">
@@ -26,14 +28,18 @@ export default function TokensGrid({
             removeTokenToCounter={removeTokenToCounter}
             addTokenToCounter={addTokenToCounter}
             resetSelection={resetSelection}
+            addHalfTokenToCounter={addHalfTokenToCounter}
+            rowId={i}
           ></TokensRow>
         ) : (
           <TokensRow
             numberOfTokensPerLine={5}
             removeTokenToCounter={removeTokenToCounter}
             addTokenToCounter={addTokenToCounter}
+            addHalfTokenToCounter={addHalfTokenToCounter}
             resetSelection={resetSelection}
             key={i}
+            rowId={i}
           ></TokensRow>
         )
       )}

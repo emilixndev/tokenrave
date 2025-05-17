@@ -26,7 +26,7 @@ export default function TokenList({
   setPriceInput,
   addToken,
 }: TokenListProps) {
-  const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter } = useTokenSelection();
+  const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter,addHalfTokenToCounter } = useTokenSelection();
   const [resetSelection, setResetSelection] = useState(false);
 
   function saveNewExpense() {
@@ -57,6 +57,7 @@ export default function TokenList({
               numberOfTokens={event.token_count}
               addTokenToCounter={addTokenToCounter}
               removeTokenToCounter={removeTokenToCounter}
+              addHalfTokenToCounter={addHalfTokenToCounter}
               resetSelection={resetSelection}
             ></TokensGrid>
           </>

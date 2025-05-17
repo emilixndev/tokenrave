@@ -6,6 +6,10 @@ const useTokenSelection = () => {
   function addTokenToCounter() {
     setTokenCounter(tokenCounter + 1);
   }
+
+  function addHalfTokenToCounter() {
+    setTokenCounter(tokenCounter + 0.5);
+  }
   function removeTokenToCounter() {
     setTokenCounter(tokenCounter - 1);
   }
@@ -18,6 +22,7 @@ const useTokenSelection = () => {
     addTokenToCounter,
     removeTokenToCounter,
     resetTokenCounter,
+    addHalfTokenToCounter
   };
 };
 
