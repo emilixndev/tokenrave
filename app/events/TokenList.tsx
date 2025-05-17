@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, ScrollView, Text, View } from 'tamagui';
 import AddTokenModal from '../../components/modals/AddTokenModal';
-import AddExpenseModal from '../../components/modals/AddExpenseModal';
 import { EventType } from '@/db/types/eventType';
 import { StyleSheet } from 'react-native';
 import useTokenSelection from '@/hooks/useTokenSelection';
@@ -26,7 +25,7 @@ export default function TokenList({
   setPriceInput,
   addToken,
 }: TokenListProps) {
-  const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter,addHalfTokenToCounter } = useTokenSelection();
+  const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter } = useTokenSelection();
   const [resetSelection, setResetSelection] = useState(false);
 
   function saveNewExpense() {
@@ -34,6 +33,7 @@ export default function TokenList({
     resetTokenCounter();
     setResetSelection(!resetSelection);
   }
+
   return (
     <View flex={1}>
       <ScrollView flex={1} contentContainerStyle={{ paddingBottom: '$14' }}>
@@ -57,7 +57,6 @@ export default function TokenList({
               numberOfTokens={event.token_count}
               addTokenToCounter={addTokenToCounter}
               removeTokenToCounter={removeTokenToCounter}
-              addHalfTokenToCounter={addHalfTokenToCounter}
               resetSelection={resetSelection}
             ></TokensGrid>
           </>

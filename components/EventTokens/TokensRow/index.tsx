@@ -1,15 +1,13 @@
 import Tokens from '@/components/EventTokens/Tokens';
 import { View } from 'tamagui';
-import { useEffect } from 'react';
-import TokenValue from '@/Enums/TokenValueEnum';
+import HalfTokens from '@/components/EventTokens/HalfTokens';
 
 interface TokensRowProps {
   numberOfTokensPerLine: number;
-  addTokenToCounter: () => void;
-  removeTokenToCounter: () => void;
+  addTokenToCounter: (amount: number) => void;
+  removeTokenToCounter: (amount: number) => void;
   resetSelection: boolean;
-  addHalfTokenToCounter: () => void;
-  rowId:number;
+  rowId: number;
 }
 
 export default function TokensRow({
@@ -17,27 +15,25 @@ export default function TokensRow({
   removeTokenToCounter,
   addTokenToCounter,
   resetSelection,
-  addHalfTokenToCounter,
 }: TokensRowProps) {
   return (
     <View flexDirection="row" justifyContent="center" width="100%" marginBottom="$1.5">
-      {[...Array(Math.ceil(numberOfTokensPerLine))].map((x, i) => (
-        numberOfTokensPerLine % 1 != 0 && Math.ceil(numberOfTokensPerLine)-1==i)?(
-        <Tokens
-          removeTokenToCounter={removeTokenToCounter}
-          addTokenToCounter={addTokenToCounter}
-          resetSelection={resetSelection}
-          key={i}
-          addHalfTokenToCounter={addHalfTokenToCounter}
-          tokenStatue={TokenValue.HALF}
-        />):( <Tokens
-          removeTokenToCounter={removeTokenToCounter}
-          addTokenToCounter={addTokenToCounter}
-          resetSelection={resetSelection}
-          key={i}
-          addHalfTokenToCounter={addHalfTokenToCounter}
-          tokenStatue={TokenValue.FULL}
-        />)
+      {[...Array(Math.ceil(numberOfTokensPerLine))].map((x, i) =>
+        numberOfTokensPerLine % 1 != 0 && Math.ceil(numberOfTokensPerLine) - 1 == i ? (
+          <HalfTokens
+            removeTokenToCounter={removeTokenToCounter}
+            addTokenToCounter={addTokenToCounter}
+            resetSelection={resetSelection}
+            key={i}
+          />
+        ) : (
+          <Tokens
+            removeTokenToCounter={removeTokenToCounter}
+            addTokenToCounter={addTokenToCounter}
+            resetSelection={resetSelection}
+            key={i}
+          />
+        )
       )}
     </View>
   );
