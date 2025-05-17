@@ -1,4 +1,4 @@
-import { Text, View } from 'tamagui';
+import { Image, Text, View } from 'tamagui';
 import React, { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
 import TokenValue from '@/Enums/TokenValueEnum';
@@ -16,21 +16,19 @@ export default function Tokens({
   removeTokenToCounter,
   resetSelection,
   addHalfTokenToCounter,
-  tokenStatue
+  tokenStatue,
 }: TokensProps) {
   const [pressed, setPressed] = useState<TokenValue>(tokenStatue);
   const [backGroundColors, setBackGroundColors] = useState<string>('white');
   const [borderColor, setborderColor] = useState<string>('white');
 
   useEffect(() => {
-
     setPressed(TokenValue.NONE);
     setBackGroundColors('white');
     setborderColor('white');
   }, [resetSelection]);
 
   function handlePress() {
-
     switch (pressed) {
       case TokenValue.NONE:
         setPressed(TokenValue.HALF);
@@ -64,22 +62,33 @@ export default function Tokens({
 
   return (
     <Pressable onPress={handlePress} style={{ marginHorizontal: 4 }}>
-      <View
-        style={{
-          paddingVertical: 10,
-          paddingHorizontal: 14,
-          borderRadius: 10,
-          borderWidth: 5,
-          borderColor: borderColor,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: backGroundColors,
-        }}
-      >
-        <Text fontSize="$6" >
-          $
-        </Text>
-      </View>
+      {pressed == TokenValue.NONE && (
+        <Image
+          source={{
+            uri: require('@/assets/images/tokens/full_blue.png'),
+            width: 50,
+            height: 50,
+          }}
+        ></Image>
+      )}
+      {pressed == TokenValue.HALF && (
+        <Image
+          source={{
+            uri: require('@/assets/images/tokens/full_blue_half_selected.png'),
+            width: 50,
+            height: 50,
+          }}
+        ></Image>
+      )}
+      {pressed == TokenValue.FULL && (
+        <Image
+          source={{
+            uri: require('@/assets/images/tokens/full_blue_selected.png'),
+            width: 50,
+            height: 50,
+          }}
+        ></Image>
+      )}
     </Pressable>
   );
 }
