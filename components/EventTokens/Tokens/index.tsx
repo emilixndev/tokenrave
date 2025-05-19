@@ -14,7 +14,8 @@ interface TokensProps {
   tokenId: number;
   reloadTokens: boolean;
   setReloadTokens: (TokenSelected: TokenSelectedType) => void;
-  tokenList: TokenSelectedType | null;
+  selectedToken: TokenSelectedType | null;
+  isPreviousToken: (rowId: number, tokenId: number, tokenSelected: TokenSelectedType | null) => boolean;
 }
 
 export default function Tokens({
@@ -25,87 +26,79 @@ export default function Tokens({
   tokenId,
   reloadTokens,
   setReloadTokens,
-  tokenList,
+  selectedToken,
+  isPreviousToken,
 }: TokensProps) {
-  const [pressed, setPressed] = useState<TokenValue>(TokenValue.NONE);
+  const [tokenValue, setTokenValue] = useState<TokenValue>(TokenValue.NONE);
+
+  //? Triggered each time the ui need to be cleared
   useEffect(() => {
-    setPressed(TokenValue.NONE);
+    setTokenValue(TokenValue.NONE);
   }, [resetSelection]);
+
+  //? Triggered each time a token is selected to all the tokens
   useEffect(() => {
-    if (rowId == tokenList?.rowId && tokenId == tokenList?.tokenId) {
+    //? If currentToken is same that selected do nothing
+    if (rowId == selectedToken?.rowId && tokenId == selectedToken?.tokenId) {
       return;
     }
-    if (isPreviousToken(rowId, tokenId, tokenList)) {
-      if (pressed == TokenValue.FULL) {
+    //? If the token is previous the one selected
+    if (isPreviousToken(rowId, tokenId, selectedToken)) {
+      if (tokenValue == TokenValue.FULL) {
         return;
       }
-      if (pressed == TokenValue.HALF) {
-        setPressed(TokenValue.FULL);
+      if (tokenValue == TokenValue.HALF) {
+        setTokenValue(TokenValue.FULL);
         addTokenToCounter(0.5);
 
         return;
       }
 
-      setPressed(TokenValue.FULL);
+      setTokenValue(TokenValue.FULL);
       addTokenToCounter(1);
     } else {
-      if (pressed == TokenValue.FULL) removeTokenToCounter(1);
-      else if (pressed == TokenValue.HALF) removeTokenToCounter(0.5);
-      setPressed(TokenValue.NONE);
+      if (tokenValue == TokenValue.FULL) removeTokenToCounter(1);
+      else if (tokenValue == TokenValue.HALF) removeTokenToCounter(0.5);
+      setTokenValue(TokenValue.NONE);
     }
   }, [reloadTokens]);
 
-  function isPreviousToken(rowId: number, tokenId: number, tokenSelected: TokenSelectedType | null) {
-    if (tokenSelected === null) {
-      return false;
-    }
-    if (tokenSelected.rowId >= rowId) {
-      if (tokenSelected.rowId == rowId) {
-        if (tokenSelected.tokenId > tokenId) {
-          return true;
-        }
-      } else {
-        return true;
-      }
-    }
-    return false;
-  }
-
   function handlePress(event: GestureReponderEvent) {
+    //? Location used to select half or full token
     const { locationX, locationY } = event.nativeEvent;
     console.log(locationX, locationY);
     setReloadTokens({ tokenId: tokenId, rowId: rowId });
 
-    switch (pressed) {
+    switch (tokenValue) {
       case TokenValue.NONE:
         if (locationX > 25) {
-          setPressed(TokenValue.FULL);
+          setTokenValue(TokenValue.FULL);
           addTokenToCounter(1);
           break;
         }
-        setPressed(TokenValue.HALF);
+        setTokenValue(TokenValue.HALF);
         addTokenToCounter(0.5);
         break;
       case TokenValue.HALF:
-        setPressed(TokenValue.FULL);
+        setTokenValue(TokenValue.FULL);
         addTokenToCounter(0.5);
 
         break;
       case TokenValue.FULL:
         if (locationX < 25) {
-          setPressed(TokenValue.HALF);
+          setTokenValue(TokenValue.HALF);
           removeTokenToCounter(0.5);
         }
         break;
       default:
-        setPressed(TokenValue.NONE);
+        setTokenValue(TokenValue.NONE);
         break;
     }
   }
 
   return (
     <Pressable onPress={handlePress} style={{ marginHorizontal: 4 }}>
-      {pressed == TokenValue.NONE && (
+      {tokenValue == TokenValue.NONE && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/full_blue.png'),
@@ -114,7 +107,7 @@ export default function Tokens({
           }}
         ></Image>
       )}
-      {pressed == TokenValue.HALF && (
+      {tokenValue == TokenValue.HALF && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/full_blue_half_selected.png'),
@@ -123,7 +116,7 @@ export default function Tokens({
           }}
         ></Image>
       )}
-      {pressed == TokenValue.FULL && (
+      {tokenValue == TokenValue.FULL && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/full_blue_selected.png'),

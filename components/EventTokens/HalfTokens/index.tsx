@@ -2,7 +2,6 @@ import { Image } from 'tamagui';
 import React, { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
 import HalfTokenValue from '@/Enums/HalfTokenValueEnum';
-import TokenValue from '@/Enums/TokenValueEnum';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
 
 interface HalfTokensProps {
@@ -13,84 +12,70 @@ interface HalfTokensProps {
   tokenId: number;
   reloadTokens: boolean;
   setReloadTokens: (TokenSelected: TokenSelectedType) => void;
-  tokenList: TokenSelectedType | null;
+  selectedToken: TokenSelectedType | null;
+  isPreviousToken: (rowId: number, tokenId: number, tokenSelected: TokenSelectedType | null) => boolean;
 }
 
-export default function HalfTokens({ addTokenToCounter, removeTokenToCounter, resetSelection,  rowId,
-                                     tokenId,
-                                     reloadTokens,
-                                     setReloadTokens,
-                                     tokenList, }: HalfTokensProps) {
-  const [pressed, setPressed] = useState<HalfTokenValue>(HalfTokenValue.NONE);
+export default function HalfTokens({
+  addTokenToCounter,
+  removeTokenToCounter,
+  resetSelection,
+  rowId,
+  tokenId,
+  reloadTokens,
+  setReloadTokens,
+  selectedToken,
+  isPreviousToken,
+}: HalfTokensProps) {
+  const [tokenValue, setTokenValue] = useState<HalfTokenValue>(HalfTokenValue.NONE);
 
+  //? Triggered each time the ui need to be cleared
   useEffect(() => {
-    setPressed(HalfTokenValue.NONE);
+    setTokenValue(HalfTokenValue.NONE);
   }, [resetSelection]);
 
-
+  //? Triggered each time a token is selected to all the tokens
   useEffect(() => {
-    if(rowId == tokenList?.rowId && tokenId == tokenList?.tokenId){
+    //? If currentToken is same that selected do nothing
+    if (rowId == selectedToken?.rowId && tokenId == selectedToken?.tokenId) {
       return;
     }
-    if (isPreviousToken(rowId, tokenId, tokenList)) {
-      if (pressed == HalfTokenValue.FULL) {
+    //? If the token is previous the one selected
+    if (isPreviousToken(rowId, tokenId, selectedToken)) {
+      if (tokenValue == HalfTokenValue.FULL) {
         return;
       }
 
-
-      setPressed(HalfTokenValue.FULL);
+      setTokenValue(HalfTokenValue.FULL);
       addTokenToCounter(0.5);
-    }else {
-      if(pressed == HalfTokenValue.FULL)
+    } else {
+      if (tokenValue == HalfTokenValue.FULL) {
         removeTokenToCounter(0.5);
-      setPressed(HalfTokenValue.NONE);
-
+      }
+      setTokenValue(HalfTokenValue.NONE);
     }
   }, [reloadTokens]);
 
-
-  function isPreviousToken(rowId: number, tokenId: number, tokenSelected: TokenSelectedType | null) {
-    if (tokenSelected === null) {
-      return false;
-    }
-    if (tokenSelected.rowId >= rowId) {
-      if (tokenSelected.rowId == rowId) {
-        if (tokenSelected.tokenId > tokenId) {
-          return true;
-        }
-      } else {
-        return true;
-      }
-    }
-    return false;
-  }
-
   function handlePress() {
     setReloadTokens({ tokenId: tokenId, rowId: rowId });
-    switch (pressed) {
+    switch (tokenValue) {
       case HalfTokenValue.NONE:
-        setPressed(HalfTokenValue.FULL);
-
+        setTokenValue(HalfTokenValue.FULL);
         addTokenToCounter(0.5);
-        console.log('pressed none');
         break;
       case HalfTokenValue.FULL:
-        setPressed(HalfTokenValue.NONE);
+        setTokenValue(HalfTokenValue.NONE);
         removeTokenToCounter(0.5);
-
-        console.log('pressed half');
         break;
-
       default:
-        setPressed(HalfTokenValue.NONE);
-
+        setTokenValue(HalfTokenValue.NONE);
         break;
     }
   }
 
   return (
     <Pressable onPress={handlePress} style={{ marginHorizontal: 4 }}>
-      {pressed == HalfTokenValue.NONE && (
+      {tokenValue == HalfTokenValue.NONE && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/half_blue.png'),
@@ -100,7 +85,7 @@ export default function HalfTokens({ addTokenToCounter, removeTokenToCounter, re
         ></Image>
       )}
 
-      {pressed == HalfTokenValue.FULL && (
+      {tokenValue == HalfTokenValue.FULL && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/half_blue_selected.png'),

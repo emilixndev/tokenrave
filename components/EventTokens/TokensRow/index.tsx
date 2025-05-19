@@ -11,7 +11,8 @@ interface TokensRowProps {
   rowId: number;
   setReloadTokens: (TokenSelected:TokenSelectedType) => void;
   reloadTokens: boolean;
-  tokenList: TokenSelectedType | null;
+  selectedToken: TokenSelectedType | null;
+  isPreviousToken: (rowId: number, tokenId: number, tokenSelected: TokenSelectedType | null) => boolean;
 }
 
 export default function TokensRow({
@@ -22,7 +23,8 @@ export default function TokensRow({
   rowId,
   reloadTokens,
   setReloadTokens,
-  tokenList,
+                                    selectedToken,
+  isPreviousToken
 }: TokensRowProps) {
   return (
     <View flexDirection="row" justifyContent="center" width="100%" marginBottom="$1.5">
@@ -37,7 +39,9 @@ export default function TokensRow({
             key={i}
             reloadTokens={reloadTokens}
             setReloadTokens={setReloadTokens}
-            tokenList={tokenList}
+            selectedToken={selectedToken}
+            isPreviousToken={isPreviousToken}
+
           />
         ) : (
           <Tokens
@@ -49,7 +53,9 @@ export default function TokensRow({
             key={i}
             reloadTokens={reloadTokens}
             setReloadTokens={setReloadTokens}
-            tokenList={tokenList}
+            selectedToken={selectedToken}
+            isPreviousToken={isPreviousToken}
+
           />
         )
       )}

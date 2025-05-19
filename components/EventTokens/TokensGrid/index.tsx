@@ -9,8 +9,9 @@ interface TokensGridProps {
   removeTokenToCounter: (amount: number) => void;
   resetSelection: boolean;
   reloadTokens: boolean;
-  setReloadTokens: (TokenSelected:TokenSelectedType) => void;
-  tokenList:  TokenSelectedType | null;
+  setReloadTokens: (TokenSelected: TokenSelectedType) => void;
+  selectedToken: TokenSelectedType | null;
+  isPreviousToken: (rowId: number, tokenId: number, tokenSelected: TokenSelectedType | null) => boolean;
 }
 
 export default function TokensGrid({
@@ -18,8 +19,10 @@ export default function TokensGrid({
   removeTokenToCounter,
   addTokenToCounter,
   resetSelection,
-  reloadTokens,setReloadTokens,tokenList
-
+  reloadTokens,
+  setReloadTokens,
+  selectedToken,
+  isPreviousToken,
 }: TokensGridProps) {
   return (
     <View marginTop="$4" paddingHorizontal="$2" alignItems="center">
@@ -34,7 +37,8 @@ export default function TokensGrid({
             rowId={i}
             reloadTokens={reloadTokens}
             setReloadTokens={setReloadTokens}
-            tokenList={tokenList}
+            selectedToken={selectedToken}
+            isPreviousToken={isPreviousToken}
           ></TokensRow>
         ) : (
           <TokensRow
@@ -45,8 +49,9 @@ export default function TokensGrid({
             key={i}
             rowId={i}
             reloadTokens={reloadTokens}
-            tokenList={tokenList}
+            selectedToken={selectedToken}
             setReloadTokens={setReloadTokens}
+            isPreviousToken={isPreviousToken}
           ></TokensRow>
         )
       )}

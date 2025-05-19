@@ -9,8 +9,6 @@ import { TokenSelectedType } from '@/Types/TokenSelectedType';
 
 interface TokenListProps {
   event: EventType | null;
-  setTokenExpenseInput: (token: number) => void;
-  tokenExpenseInput: number;
   saveExpense: (tokenExpenseCount: number) => void;
   setTokenInput: (token: number) => void;
   setPriceInput: (price: number) => void;
@@ -19,17 +17,15 @@ interface TokenListProps {
 
 export default function TokenList({
   event,
-  setTokenExpenseInput,
-  tokenExpenseInput,
   saveExpense,
   setTokenInput,
   setPriceInput,
   addToken,
 }: TokenListProps) {
-  const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter } = useTokenSelection();
+  const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter, isPreviousToken } = useTokenSelection();
   const [resetSelection, setResetSelection] = useState(false);
   const [reloadTokens, setReloadTokens] = useState(false);
-  const [tokenList, setTokenList] = useState<TokenSelectedType | null>(null);
+  const [selectedToken, setSelectedToken] = useState<TokenSelectedType | null>(null);
 
   function saveNewExpense() {
     saveExpense(tokenCounter);
@@ -38,7 +34,7 @@ export default function TokenList({
   }
 
   function reloadTokensTest(TokenSelected: TokenSelectedType) {
-    setTokenList(TokenSelected );
+    setSelectedToken(TokenSelected );
     setReloadTokens(!reloadTokens);
   }
 
@@ -68,7 +64,8 @@ export default function TokenList({
               resetSelection={resetSelection}
               setReloadTokens={reloadTokensTest}
               reloadTokens={reloadTokens}
-              tokenList={tokenList}
+              selectedToken={selectedToken}
+              isPreviousToken={isPreviousToken}
             ></TokensGrid>
           </>
         )}

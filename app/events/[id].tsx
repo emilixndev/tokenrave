@@ -48,8 +48,6 @@ export default function Index() {
             setTokenInput={setTokenInput}
             setPriceInput={setPriceInput}
             addToken={addToken}
-            setTokenExpenseInput={saveExpense}
-            tokenExpenseInput={0}
           ></TokenList>
         </Tabs.Content>
         <Tabs.Content value="tab2" flex={1}>

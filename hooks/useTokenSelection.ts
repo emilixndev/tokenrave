@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { TokenSelectedType } from '@/Types/TokenSelectedType';
 
 const useTokenSelection = () => {
   const [tokenCounter, setTokenCounter] = useState<number>(0);
@@ -16,11 +17,28 @@ const useTokenSelection = () => {
     setTokenCounter(0);
   }
 
+  function isPreviousToken(rowId: number, tokenId: number, tokenSelected: TokenSelectedType | null) {
+    if (tokenSelected === null) {
+      return false;
+    }
+    if (tokenSelected.rowId >= rowId) {
+      if (tokenSelected.rowId == rowId) {
+        if (tokenSelected.tokenId > tokenId) {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+
   return {
     tokenCounter,
     addTokenToCounter,
     removeTokenToCounter,
     resetTokenCounter,
+    isPreviousToken,
   };
 };
 
