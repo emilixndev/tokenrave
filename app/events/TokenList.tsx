@@ -5,6 +5,7 @@ import { EventType } from '@/db/types/eventType';
 import { StyleSheet } from 'react-native';
 import useTokenSelection from '@/hooks/useTokenSelection';
 import TokensGrid from '@/components/EventTokens/TokensGrid';
+import { TokenSelectedType } from '@/Types/TokenSelectedType';
 
 interface TokenListProps {
   event: EventType | null;
@@ -27,11 +28,18 @@ export default function TokenList({
 }: TokenListProps) {
   const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter } = useTokenSelection();
   const [resetSelection, setResetSelection] = useState(false);
+  const [reloadTokens, setReloadTokens] = useState(false);
+  const [tokenList, setTokenList] = useState<TokenSelectedType | null>(null);
 
   function saveNewExpense() {
     saveExpense(tokenCounter);
     resetTokenCounter();
     setResetSelection(!resetSelection);
+  }
+
+  function reloadTokensTest(TokenSelected: TokenSelectedType) {
+    setTokenList(TokenSelected );
+    setReloadTokens(!reloadTokens);
   }
 
   return (
@@ -58,6 +66,9 @@ export default function TokenList({
               addTokenToCounter={addTokenToCounter}
               removeTokenToCounter={removeTokenToCounter}
               resetSelection={resetSelection}
+              setReloadTokens={reloadTokensTest}
+              reloadTokens={reloadTokens}
+              tokenList={tokenList}
             ></TokensGrid>
           </>
         )}

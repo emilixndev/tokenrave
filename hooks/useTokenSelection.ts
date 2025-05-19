@@ -2,13 +2,14 @@ import { useState } from 'react';
 
 const useTokenSelection = () => {
   const [tokenCounter, setTokenCounter] = useState<number>(0);
+  const [tokenList, setTokenList] = useState<string[]>([]);
 
   function addTokenToCounter(amount: number) {
-    setTokenCounter(tokenCounter + amount);
+    setTokenCounter((prevCounter) => prevCounter + amount);
   }
 
   function removeTokenToCounter(amount: number) {
-    setTokenCounter(tokenCounter - amount);
+    setTokenCounter((prevCounter) => prevCounter - amount);
   }
 
   function resetTokenCounter() {

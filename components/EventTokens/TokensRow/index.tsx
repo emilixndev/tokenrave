@@ -1,6 +1,7 @@
 import Tokens from '@/components/EventTokens/Tokens';
 import { View } from 'tamagui';
 import HalfTokens from '@/components/EventTokens/HalfTokens';
+import { TokenSelectedType } from '@/Types/TokenSelectedType';
 
 interface TokensRowProps {
   numberOfTokensPerLine: number;
@@ -8,6 +9,9 @@ interface TokensRowProps {
   removeTokenToCounter: (amount: number) => void;
   resetSelection: boolean;
   rowId: number;
+  setReloadTokens: (TokenSelected:TokenSelectedType) => void;
+  reloadTokens: boolean;
+  tokenList: TokenSelectedType | null;
 }
 
 export default function TokensRow({
@@ -15,6 +19,10 @@ export default function TokensRow({
   removeTokenToCounter,
   addTokenToCounter,
   resetSelection,
+  rowId,
+  reloadTokens,
+  setReloadTokens,
+  tokenList,
 }: TokensRowProps) {
   return (
     <View flexDirection="row" justifyContent="center" width="100%" marginBottom="$1.5">
@@ -24,14 +32,24 @@ export default function TokensRow({
             removeTokenToCounter={removeTokenToCounter}
             addTokenToCounter={addTokenToCounter}
             resetSelection={resetSelection}
+            rowId={rowId}
+            tokenId={i}
             key={i}
+            reloadTokens={reloadTokens}
+            setReloadTokens={setReloadTokens}
+            tokenList={tokenList}
           />
         ) : (
           <Tokens
             removeTokenToCounter={removeTokenToCounter}
             addTokenToCounter={addTokenToCounter}
             resetSelection={resetSelection}
+            rowId={rowId}
+            tokenId={i}
             key={i}
+            reloadTokens={reloadTokens}
+            setReloadTokens={setReloadTokens}
+            tokenList={tokenList}
           />
         )
       )}

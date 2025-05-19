@@ -1,12 +1,16 @@
 import { View } from 'tamagui';
 import TokensRow from '@/components/EventTokens/TokensRow';
 import React from 'react';
+import { TokenSelectedType } from '@/Types/TokenSelectedType';
 
 interface TokensGridProps {
   numberOfTokens: number;
   addTokenToCounter: (amount: number) => void;
   removeTokenToCounter: (amount: number) => void;
   resetSelection: boolean;
+  reloadTokens: boolean;
+  setReloadTokens: (TokenSelected:TokenSelectedType) => void;
+  tokenList:  TokenSelectedType | null;
 }
 
 export default function TokensGrid({
@@ -14,6 +18,8 @@ export default function TokensGrid({
   removeTokenToCounter,
   addTokenToCounter,
   resetSelection,
+  reloadTokens,setReloadTokens,tokenList
+
 }: TokensGridProps) {
   return (
     <View marginTop="$4" paddingHorizontal="$2" alignItems="center">
@@ -26,6 +32,9 @@ export default function TokensGrid({
             addTokenToCounter={addTokenToCounter}
             resetSelection={resetSelection}
             rowId={i}
+            reloadTokens={reloadTokens}
+            setReloadTokens={setReloadTokens}
+            tokenList={tokenList}
           ></TokensRow>
         ) : (
           <TokensRow
@@ -35,6 +44,9 @@ export default function TokensGrid({
             resetSelection={resetSelection}
             key={i}
             rowId={i}
+            reloadTokens={reloadTokens}
+            tokenList={tokenList}
+            setReloadTokens={setReloadTokens}
           ></TokensRow>
         )
       )}
