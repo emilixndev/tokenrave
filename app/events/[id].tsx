@@ -5,7 +5,7 @@ import HistoryList from '@/app/events/HistoryList';
 import useTokenManagement from '@/hooks/useTokenManagement';
 
 export default function Index() {
-  const { id, limit } = useLocalSearchParams();
+  const { id } = useLocalSearchParams();
   const { event, history, setTokenInput, setPriceInput, saveExpense, addToken } = useTokenManagement(Number(id));
   return (
     <View flex={1}>

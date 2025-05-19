@@ -2,7 +2,6 @@ import { Button, Dialog, Fieldset, Input, Label, Text, Unspaced, XStack } from '
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 import ButtonWithBadge from '@/components/common/ButtonWithBadge';
 import { X } from '@tamagui/lucide-icons';
-import EventTarget from 'event-target-shim';
 import { EventType } from '@/db/types/eventType';
 
 interface addTokenModalProps {

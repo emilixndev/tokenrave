@@ -1,7 +1,6 @@
 import { Button, Dialog, Fieldset, Input, Label, Unspaced, XStack } from 'tamagui';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 import { X } from '@tamagui/lucide-icons';
-import { useEffect } from 'react';
 
 interface addTokenModalProps {
   setTokenInput: (token: number) => void;

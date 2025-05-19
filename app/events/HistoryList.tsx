@@ -1,5 +1,4 @@
 import { Separator, Text, View } from 'tamagui';
-import { useState } from 'react';
 import { HistoryType } from '@/db/types/historyType';
 
 interface HistoryListProps {
@@ -10,7 +9,7 @@ export default function HistoryList({ history }: HistoryListProps) {
   return (
     <>
       {history && history.length > 0 ? (
-        history.map((value: any) => (
+        history.map((value: HistoryType) => (
           <View key={value.id}>
             <Text>{value.amount} Token </Text>
             <Text>{new Date(value.created_at).toLocaleDateString('fr-FR')}</Text>

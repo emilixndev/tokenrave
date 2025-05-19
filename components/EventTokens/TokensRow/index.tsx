@@ -9,7 +9,7 @@ interface TokensRowProps {
   removeTokenToCounter: (amount: number) => void;
   resetSelection: boolean;
   rowId: number;
-  setReloadTokens: (TokenSelected:TokenSelectedType) => void;
+  setReloadTokens: (TokenSelected: TokenSelectedType) => void;
   reloadTokens: boolean;
   selectedToken: TokenSelectedType | null;
   isPreviousToken: (rowId: number, tokenId: number, tokenSelected: TokenSelectedType | null) => boolean;
@@ -23,13 +23,13 @@ export default function TokensRow({
   rowId,
   reloadTokens,
   setReloadTokens,
-                                    selectedToken,
-  isPreviousToken
+  selectedToken,
+  isPreviousToken,
 }: TokensRowProps) {
   return (
     <View flexDirection="row" justifyContent="center" width="100%" marginBottom="$1.5">
       {[...Array(Math.ceil(numberOfTokensPerLine))].map((x, i) =>
-        numberOfTokensPerLine % 1 != 0 && Math.ceil(numberOfTokensPerLine) - 1 == i ? (
+        numberOfTokensPerLine % 1 !== 0 && Math.ceil(numberOfTokensPerLine) - 1 === i ? (
           <HalfTokens
             removeTokenToCounter={removeTokenToCounter}
             addTokenToCounter={addTokenToCounter}
@@ -41,7 +41,6 @@ export default function TokensRow({
             setReloadTokens={setReloadTokens}
             selectedToken={selectedToken}
             isPreviousToken={isPreviousToken}
-
           />
         ) : (
           <Tokens
@@ -55,7 +54,6 @@ export default function TokensRow({
             setReloadTokens={setReloadTokens}
             selectedToken={selectedToken}
             isPreviousToken={isPreviousToken}
-
           />
         )
       )}

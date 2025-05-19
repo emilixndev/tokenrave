@@ -1,10 +1,6 @@
- enum HalfTokenValue
-{
+enum HalfTokenValue {
   NONE = 'NONE',
-  FULL = 'FULL'
-
+  FULL = 'FULL',
 }
-
-
 
 export default HalfTokenValue;

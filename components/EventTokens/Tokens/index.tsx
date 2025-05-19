@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
 import TokenValue from '@/Enums/TokenValueEnum';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
-import { PressableEvent } from 'react-native-gesture-handler/lib/typescript/components/Pressable/PressableProps';
 import { GestureReponderEvent } from '@tamagui/web';
 
 interface TokensProps {
@@ -39,15 +38,15 @@ export default function Tokens({
   //? Triggered each time a token is selected to all the tokens
   useEffect(() => {
     //? If currentToken is same that selected do nothing
-    if (rowId == selectedToken?.rowId && tokenId == selectedToken?.tokenId) {
+    if (rowId === selectedToken?.rowId && tokenId === selectedToken?.tokenId) {
       return;
     }
     //? If the token is previous the one selected
     if (isPreviousToken(rowId, tokenId, selectedToken)) {
-      if (tokenValue == TokenValue.FULL) {
+      if (tokenValue === TokenValue.FULL) {
         return;
       }
-      if (tokenValue == TokenValue.HALF) {
+      if (tokenValue === TokenValue.HALF) {
         setTokenValue(TokenValue.FULL);
         addTokenToCounter(0.5);
 
@@ -57,8 +56,8 @@ export default function Tokens({
       setTokenValue(TokenValue.FULL);
       addTokenToCounter(1);
     } else {
-      if (tokenValue == TokenValue.FULL) removeTokenToCounter(1);
-      else if (tokenValue == TokenValue.HALF) removeTokenToCounter(0.5);
+      if (tokenValue === TokenValue.FULL) removeTokenToCounter(1);
+      else if (tokenValue === TokenValue.HALF) removeTokenToCounter(0.5);
       setTokenValue(TokenValue.NONE);
     }
   }, [reloadTokens]);
@@ -98,7 +97,7 @@ export default function Tokens({
 
   return (
     <Pressable onPress={handlePress} style={{ marginHorizontal: 4 }}>
-      {tokenValue == TokenValue.NONE && (
+      {tokenValue === TokenValue.NONE && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/full_blue.png'),
@@ -107,7 +106,7 @@ export default function Tokens({
           }}
         ></Image>
       )}
-      {tokenValue == TokenValue.HALF && (
+      {tokenValue === TokenValue.HALF && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/full_blue_half_selected.png'),
@@ -116,7 +115,7 @@ export default function Tokens({
           }}
         ></Image>
       )}
-      {tokenValue == TokenValue.FULL && (
+      {tokenValue === TokenValue.FULL && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/full_blue_selected.png'),

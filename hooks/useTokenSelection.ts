@@ -1,16 +1,15 @@
-import { useState } from 'react';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
+import { useState } from 'react';
 
 const useTokenSelection = () => {
   const [tokenCounter, setTokenCounter] = useState<number>(0);
-  const [tokenList, setTokenList] = useState<string[]>([]);
 
   function addTokenToCounter(amount: number) {
-    setTokenCounter((prevCounter) => prevCounter + amount);
+    setTokenCounter((prevCounter: number) => prevCounter + amount);
   }
 
   function removeTokenToCounter(amount: number) {
-    setTokenCounter((prevCounter) => prevCounter - amount);
+    setTokenCounter((prevCounter: number) => prevCounter - amount);
   }
 
   function resetTokenCounter() {
@@ -22,7 +21,7 @@ const useTokenSelection = () => {
       return false;
     }
     if (tokenSelected.rowId >= rowId) {
-      if (tokenSelected.rowId == rowId) {
+      if (tokenSelected.rowId === rowId) {
         if (tokenSelected.tokenId > tokenId) {
           return true;
         }

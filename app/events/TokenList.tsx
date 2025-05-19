@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button, ScrollView, Text, View } from 'tamagui';
 import AddTokenModal from '../../components/modals/AddTokenModal';
 import { EventType } from '@/db/types/eventType';
-import { StyleSheet } from 'react-native';
 import useTokenSelection from '@/hooks/useTokenSelection';
 import TokensGrid from '@/components/EventTokens/TokensGrid';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
@@ -15,14 +14,9 @@ interface TokenListProps {
   addToken: () => void;
 }
 
-export default function TokenList({
-  event,
-  saveExpense,
-  setTokenInput,
-  setPriceInput,
-  addToken,
-}: TokenListProps) {
-  const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter, isPreviousToken } = useTokenSelection();
+export default function TokenList({ event, saveExpense, setTokenInput, setPriceInput, addToken }: TokenListProps) {
+  const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter, isPreviousToken } =
+    useTokenSelection();
   const [resetSelection, setResetSelection] = useState(false);
   const [reloadTokens, setReloadTokens] = useState(false);
   const [selectedToken, setSelectedToken] = useState<TokenSelectedType | null>(null);
@@ -34,7 +28,7 @@ export default function TokenList({
   }
 
   function reloadTokensTest(TokenSelected: TokenSelectedType) {
-    setSelectedToken(TokenSelected );
+    setSelectedToken(TokenSelected);
     setReloadTokens(!reloadTokens);
   }
 
@@ -120,16 +114,3 @@ export default function TokenList({
     </View>
   );
 }
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  btnNormal: {
-    borderColor: 'red',
-  },
-  btnPress: {
-    borderColor: 'blue',
-  },
-});

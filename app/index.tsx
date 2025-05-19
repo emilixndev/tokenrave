@@ -10,7 +10,7 @@ import { EventType } from '@/db/types/eventType';
 export default function Index() {
   const database = useSQLiteContext();
 
-  const [events, setEvents] = useState<any>([]);
+  const [events, setEvents] = useState<EventType[] | []>([]);
 
   async function fetchEvents() {
     const eventsTest = await getAllEvents(database);

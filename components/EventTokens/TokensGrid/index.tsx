@@ -27,7 +27,7 @@ export default function TokensGrid({
   return (
     <View marginTop="$4" paddingHorizontal="$2" alignItems="center">
       {[...Array(Math.ceil(numberOfTokens / 5))].map((x, i) =>
-        i == Math.ceil(numberOfTokens / 5) - 1 && numberOfTokens % 5 !== 0 ? (
+        i === Math.ceil(numberOfTokens / 5) - 1 && numberOfTokens % 5 !== 0 ? (
           <TokensRow
             key={i}
             numberOfTokensPerLine={numberOfTokens % 5}

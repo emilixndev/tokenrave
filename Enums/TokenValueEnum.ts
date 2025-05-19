@@ -1,11 +1,7 @@
- enum TokenValue
-{
-  NONE = 0,
-  HALF = 0.5,
-  FULL = 1
-
+enum TokenValue {
+  NONE = 'NONE',
+  HALF = 'HALF',
+  FULL = 'FULL',
 }
-
-
 
 export default TokenValue;

@@ -37,19 +37,19 @@ export default function HalfTokens({
   //? Triggered each time a token is selected to all the tokens
   useEffect(() => {
     //? If currentToken is same that selected do nothing
-    if (rowId == selectedToken?.rowId && tokenId == selectedToken?.tokenId) {
+    if (rowId === selectedToken?.rowId && tokenId === selectedToken?.tokenId) {
       return;
     }
     //? If the token is previous the one selected
     if (isPreviousToken(rowId, tokenId, selectedToken)) {
-      if (tokenValue == HalfTokenValue.FULL) {
+      if (tokenValue === HalfTokenValue.FULL) {
         return;
       }
 
       setTokenValue(HalfTokenValue.FULL);
       addTokenToCounter(0.5);
     } else {
-      if (tokenValue == HalfTokenValue.FULL) {
+      if (tokenValue === HalfTokenValue.FULL) {
         removeTokenToCounter(0.5);
       }
       setTokenValue(HalfTokenValue.NONE);
@@ -75,7 +75,7 @@ export default function HalfTokens({
 
   return (
     <Pressable onPress={handlePress} style={{ marginHorizontal: 4 }}>
-      {tokenValue == HalfTokenValue.NONE && (
+      {tokenValue === HalfTokenValue.NONE && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/half_blue.png'),
@@ -85,7 +85,7 @@ export default function HalfTokens({
         ></Image>
       )}
 
-      {tokenValue == HalfTokenValue.FULL && (
+      {tokenValue === HalfTokenValue.FULL && (
         <Image
           source={{
             uri: require('@/assets/images/tokens/half_blue_selected.png'),
