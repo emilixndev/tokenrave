@@ -34,12 +34,10 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
 
   return (
     <View flex={1}>
-      <ScrollView flex={1} contentContainerStyle={{ paddingBottom: '$14' }}>
+      <ScrollView flex={1} contentContainerStyle={{ paddingBottom: '$14' }} marginTop={10}>
         {event && (
           <>
-            <Text textAlign={'center'} fontWeight={'bold'} fontSize={30} marginBottom="$2">
-              {event.name}
-            </Text>
+
             <View flexDirection="row" width="100%" paddingHorizontal="$2">
               <View flex={1}>
                 <Text textAlign="left">{Math.round(event.total_price * 100) / 100} €</Text>
