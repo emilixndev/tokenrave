@@ -13,7 +13,9 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
     <>
       <Dialog modal>
         <Dialog.Trigger asChild>
-          <Button>Add Token</Button>
+          <Button backgroundColor={'#0d6efd'} color={'white'}>
+            Add Token
+          </Button>
         </Dialog.Trigger>
 
         <Dialog.Portal>
@@ -91,6 +93,8 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
                   onPress={() => {
                     addToken();
                   }}
+                  backgroundColor={'#0d6efd'}
+                  color={'white'}
                 >
                   Save changes
                 </Button>
@@ -99,7 +103,16 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button position="absolute" top="$3" right="$3" size="$2" circular icon={X} />
+                <Button
+                  position="absolute"
+                  top="$3"
+                  right="$3"
+                  size="$2"
+                  circular
+                  icon={X}
+                  backgroundColor={'#dc3545'}
+                  color={'white'}
+                />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>

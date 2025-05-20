@@ -27,8 +27,6 @@ export default function Index() {
         </View>
       )}
 
-
-
       <View flex={1}>
         <Tabs
           defaultValue="tab1"
@@ -41,11 +39,15 @@ export default function Index() {
           overflow="hidden"
           borderColor="$borderColor"
         >
-          <Tabs.List separator={<Separator vertical />} disablePassBorderRadius="bottom"
-                     aria-label="Manage your account">
+          <Tabs.List
+            separator={<Separator vertical />}
+            disablePassBorderRadius="bottom"
+            aria-label="Manage your account"
+          >
             <Tabs.Tab
               focusStyle={{
-                backgroundColor: '$color3',
+                borderBottomWidth: '$1',
+                borderColor: '#0d6efd',
               }}
               flex={1}
               value="tab1"
@@ -54,7 +56,8 @@ export default function Index() {
             </Tabs.Tab>
             <Tabs.Tab
               focusStyle={{
-                backgroundColor: '$color3',
+                borderBottomWidth: '$1',
+                borderColor: '#0d6efd',
               }}
               flex={1}
               value="tab2"

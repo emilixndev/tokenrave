@@ -18,10 +18,12 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
   }
 
   return (
-    <View gap="$4" justifyContent="center" alignItems="center">
+    <View gap="$4" justifyContent="center" alignItems="center" position="absolute" bottom="$5" left="$0" right="$0">
       <Dialog modal>
         <Dialog.Trigger asChild>
-          <Button>Add event</Button>
+          <Button width={'50%'} bordered backgroundColor={'#0d6efd'} color={'white'}>
+            Add new event
+          </Button>
         </Dialog.Trigger>
 
         <Dialog.Portal>
@@ -78,7 +80,13 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
 
             <XStack alignSelf="flex-end" gap="$4">
               <Dialog.Close displayWhenAdapted asChild>
-                <Button theme="accent" aria-label="Close" onPress={addEvent}>
+                <Button
+                  theme="accent"
+                  aria-label="Close"
+                  onPress={addEvent}
+                  backgroundColor={'#0d6efd'}
+                  color={'white'}
+                >
                   Save changes
                 </Button>
               </Dialog.Close>
@@ -86,7 +94,16 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button position="absolute" top="$3" right="$3" size="$2" circular icon={X} />
+                <Button
+                  position="absolute"
+                  top="$3"
+                  right="$3"
+                  size="$2"
+                  circular
+                  icon={X}
+                  backgroundColor={'#dc3545'}
+                  color={'white'}
+                />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>

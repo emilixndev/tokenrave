@@ -37,16 +37,21 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
       <ScrollView flex={1} contentContainerStyle={{ paddingBottom: '$14' }} marginTop={10}>
         {event && (
           <>
-
             <View flexDirection="row" width="100%" paddingHorizontal="$2">
               <View flex={1}>
-                <Text textAlign="left">{Math.round(event.total_price * 100) / 100} €</Text>
+                <Text textAlign="left" fontWeight={'bold'}>
+                  {Math.round(event.total_price * 100) / 100} €
+                </Text>
               </View>
               <View flex={1}>
-                <Text textAlign="center">{event.token_count} T</Text>
+                <Text textAlign="center" fontWeight={'bold'}>
+                  {event.token_count} T
+                </Text>
               </View>
               <View flex={1}>
-                <Text textAlign="right">1T/{Math.round(event.token_price * 100) / 100}€ </Text>
+                <Text textAlign="right" fontWeight={'bold'}>
+                  1T/{Math.round(event.token_price * 100) / 100}€{' '}
+                </Text>
               </View>
             </View>
             <TokensGrid
@@ -96,6 +101,8 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
           {event &&
             (tokenCounter !== 0 ? (
               <Button
+                backgroundColor={'#0d6efd'}
+                color={'white'}
                 onPress={() => {
                   saveNewExpense();
                 }}
@@ -103,7 +110,7 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
                 Add expense
               </Button>
             ) : (
-              <Button disabled opacity={0.5}>
+              <Button disabled opacity={0.5} backgroundColor={'#0d6efd'} color={'white'}>
                 Add expense
               </Button>
             ))}
