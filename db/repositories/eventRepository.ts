@@ -6,7 +6,7 @@ export const insertEvent = async (db: SQLiteDatabase, name: string): Promise<voi
 };
 
 export const getAllEvents = async (db: SQLiteDatabase): Promise<EventType[]> => {
-  return await db.getAllAsync<EventType>('SELECT * FROM events;');
+  return await db.getAllAsync<EventType>('SELECT * FROM events ORDER BY created_at DESC;');
 };
 
 export const getEventById = async (db: SQLiteDatabase, id: number): Promise<EventType | null> => {
@@ -43,4 +43,12 @@ export const updateTokenAmountAndTotalPriceWithExpense = async (
                             set token_count = ${tokenCount},
                                 total_price = total_price - ${priceExpense}
                             WHERE events.id = ${id}`);
+};
+
+export const addNewEvent = async (
+  db: SQLiteDatabase,
+  name:string
+): Promise<SQLiteRunResult> => {
+  return await db.runAsync(`INSERT INTO events (name, token_count, token_price, total_price,created_at)
+                            VALUES ('${name}', 0, 0, 0,datetime('now','localtime'))`);
 };

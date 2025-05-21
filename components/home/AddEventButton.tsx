@@ -1,24 +1,25 @@
 import { X } from '@tamagui/lucide-icons';
 import { AlertDialog, Button, Dialog, Fieldset, Input, Label, Unspaced, View, XStack, YStack } from 'tamagui';
 import { useState } from 'react';
-import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
+import { Keyboard, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
+import { addNewEvent } from '@/db/repositories/eventRepository';
+
 
 export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => void }) {
-  // ... existing code
-
   const [nameTxt, setNameTxt] = useState('');
   const [btnOpacity, setBtnOpacity] = useState(0.5);
   const [disabledBtn, setDisabledBtn] = useState(true);
 
   const database = useSQLiteContext();
 
-  function addEvent() {
+  async function addEvent() {
     if (!nameTxt.trim()) {
       return;
     }
-    database.runSync(`INSERT INTO events (name, token_count, token_price, total_price)
-                      VALUES ('${nameTxt}', 0, 0, 0)`);
+    await addNewEvent(database, nameTxt);
+    setNameTxt('');
+    Keyboard.dismiss();
     onEventAdded && onEventAdded();
   }
 
@@ -81,11 +82,9 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
                   if (e.nativeEvent.text.trim()) {
                     setBtnOpacity(1);
                     setDisabledBtn(false);
-
                   } else {
                     setBtnOpacity(0.5);
                     setDisabledBtn(true);
-
                   }
                   setNameTxt(e.nativeEvent.text);
                 }}
