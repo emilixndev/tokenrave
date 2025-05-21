@@ -1,5 +1,5 @@
 import { X } from '@tamagui/lucide-icons';
-import { Button, Dialog, Fieldset, Input, Label, Unspaced, View, XStack } from 'tamagui';
+import { AlertDialog, Button, Dialog, Fieldset, Input, Label, Unspaced, View, XStack, YStack } from 'tamagui';
 import { useState } from 'react';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -7,13 +7,18 @@ import { useSQLiteContext } from 'expo-sqlite';
 export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => void }) {
   // ... existing code
 
-  const [nameTxt, setNameTxt] = useState('s');
+  const [nameTxt, setNameTxt] = useState('');
+  const [btnOpacity, setBtnOpacity] = useState(0.5);
+  const [disabledBtn, setDisabledBtn] = useState(true);
 
   const database = useSQLiteContext();
 
   function addEvent() {
-    database.runSync(`INSERT INTO events (name,token_count,token_price,total_price)
-                      VALUES ('${nameTxt}',0,0,0)`);
+    if (!nameTxt.trim()) {
+      return;
+    }
+    database.runSync(`INSERT INTO events (name, token_count, token_price, total_price)
+                      VALUES ('${nameTxt}', 0, 0, 0)`);
     onEventAdded && onEventAdded();
   }
 
@@ -73,8 +78,18 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
                 id="name"
                 placeholder="Event name"
                 onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                  if (e.nativeEvent.text.trim()) {
+                    setBtnOpacity(1);
+                    setDisabledBtn(false);
+
+                  } else {
+                    setBtnOpacity(0.5);
+                    setDisabledBtn(true);
+
+                  }
                   setNameTxt(e.nativeEvent.text);
                 }}
+                maxLength={20}
               />
             </Fieldset>
 
@@ -84,6 +99,8 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
                   theme="accent"
                   aria-label="Close"
                   onPress={addEvent}
+                  disabled={disabledBtn}
+                  opacity={btnOpacity}
                   backgroundColor={'#0d6efd'}
                   color={'white'}
                 >
