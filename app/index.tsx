@@ -41,7 +41,7 @@ export default function Index() {
                   <Card elevate size="$1" style={styles.card} borderRadius="$6">
                     <XStack justifyContent="space-between" alignItems="center">
                       <YStack>
-                        <H5>{value.name}</H5>
+                        <H5>{value.name.substring(0,26) + (value.name.length > 26 ? '...' : '')}</H5>
                         <Text style={{ fontSize: 15 }}>{value.token_count} tokens remaining</Text>
                       </YStack>
                       <YStack>

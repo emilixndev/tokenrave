@@ -3,7 +3,7 @@ import { Separator, SizableText, Tabs, View, Text, Button } from 'tamagui';
 import TokenList from '@/app/events/TokenList';
 import HistoryList from '@/app/events/HistoryList';
 import useTokenManagement from '@/hooks/useTokenManagement';
-import { ArrowLeft, ChevronLeft } from '@tamagui/lucide-icons';
+import { ArrowLeft, ArrowRight, ChevronLeft,Settings } from '@tamagui/lucide-icons';
 
 export default function Index() {
   const { id } = useLocalSearchParams();
@@ -11,19 +11,27 @@ export default function Index() {
   return (
     <View flex={1}>
       {event && (
-        <View padding="$4" flexDirection="row" alignItems="center">
+        <View padding="$4" flexDirection="row"  alignItems="center" justifyContent="space-between">
           <Button
+            flex={1}
             icon={ArrowLeft}
             onPress={() => router.back()}
             chromeless
             circular
-            position="absolute"
             zIndex={1}
             size={40}
           />
-          <Text textAlign={'center'} fontWeight={'bold'} fontSize={30} width="100%">
-            {event.name}
+          <Text flex={1} textAlign={"center"} fontWeight={'bold'} fontSize={20} width="100%">
+            {event.name.substring(0,26) + (event.name.length > 26 ? '...' : '')}
           </Text>
+          <Button
+            flex={1}
+            icon={Settings}
+            chromeless
+            circular
+            zIndex={1}
+            size={40}
+          />
         </View>
       )}
 

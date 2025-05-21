@@ -88,7 +88,7 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
                   }
                   setNameTxt(e.nativeEvent.text);
                 }}
-                maxLength={20}
+                maxLength={30}
               />
             </Fieldset>
 
