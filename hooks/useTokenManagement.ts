@@ -28,12 +28,10 @@ const useTokenManagement = (id: number) => {
   async function getHistory() {
     const historySelected = await getHistoryById(database, Number(id));
     setHistory(historySelected);
-    console.log(historySelected);
   }
 
   async function getEvent() {
     const eventSelected = await getEventById(database, Number(id));
-    console.log(eventSelected);
     setEvent(eventSelected);
   }
 
@@ -47,7 +45,7 @@ const useTokenManagement = (id: number) => {
 
   function saveExpense(tokenExpenseCount: number) {
     if (event) {
-      addExpenseToHistory(database, Date.now(), tokenExpenseCount, Number(id));
+      addExpenseToHistory(database, tokenExpenseCount, Number(id));
 
       updateTokenAmountAndTotalPriceWithExpense(
         database,

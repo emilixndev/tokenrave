@@ -10,10 +10,9 @@ export const getHistoryById = async (db: SQLiteDatabase, id: number): Promise<Hi
 
 export const addExpenseToHistory = async (
   db: SQLiteDatabase,
-  date: number,
   amountToken: number,
   idEvent: number
 ): Promise<SQLiteRunResult> => {
   return await db.runAsync(`INSERT INTO history (created_at, amount, events_reference)
-                        values (${date}, ${amountToken}, ${idEvent})`);
+                        values ('datetime('now','localtime')', ${amountToken}, ${idEvent})`);
 };

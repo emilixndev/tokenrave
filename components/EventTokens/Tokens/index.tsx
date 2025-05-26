@@ -65,7 +65,6 @@ export default function Tokens({
   function handlePress(event: GestureReponderEvent) {
     //? Location used to select half or full token
     const { locationX, locationY } = event.nativeEvent;
-    console.log(locationX, locationY);
     setReloadTokens({ tokenId: tokenId, rowId: rowId });
 
     switch (tokenValue) {
