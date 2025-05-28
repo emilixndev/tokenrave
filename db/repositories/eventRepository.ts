@@ -45,10 +45,7 @@ export const updateTokenAmountAndTotalPriceWithExpense = async (
                             WHERE events.id = ${id}`);
 };
 
-export const addNewEvent = async (
-  db: SQLiteDatabase,
-  name:string
-): Promise<SQLiteRunResult> => {
+export const addNewEvent = async (db: SQLiteDatabase, name: string): Promise<SQLiteRunResult> => {
   return await db.runAsync(`INSERT INTO events (name, token_count, token_price, total_price,created_at)
                             VALUES ('${name}', 0, 0, 0,datetime('now','localtime'))`);
 };

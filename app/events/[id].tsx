@@ -8,22 +8,20 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function Index() {
   const { id } = useLocalSearchParams();
-  const { event, history, setTokenInput, setPriceInput, saveExpense, addToken,priceInput } = useTokenManagement(Number(id));
+  const { event, history, setTokenInput, setPriceInput, saveExpense, addToken, priceInput } = useTokenManagement(
+    Number(id)
+  );
   const [activeTab, setActiveTab] = useState('tab1');
 
   return (
     <View style={styles.container}>
       {event && (
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.headerButton}
-            onPress={() => router.back()}
-            activeOpacity={0.7}
-          >
+          <TouchableOpacity style={styles.headerButton} onPress={() => router.back()} activeOpacity={0.7}>
             <Ionicons name="chevron-back" size={28} color="#0d6efd" />
           </TouchableOpacity>
           <Text style={styles.headerTitle} numberOfLines={1}>
-            {event.name.substring(0,26) + (event.name.length > 26 ? '...' : '')}
+            {event.name.substring(0, 26) + (event.name.length > 26 ? '...' : '')}
           </Text>
           <TouchableOpacity style={styles.headerButton} activeOpacity={0.7}>
             <Ionicons name="settings-outline" size={24} color="#0d6efd" />
@@ -39,10 +37,10 @@ export default function Index() {
               onPress={() => setActiveTab('tab1')}
               activeOpacity={0.7}
             >
-              <Ionicons 
-                name="ticket-outline" 
-                size={20} 
-                color={activeTab === 'tab1' ? '#0d6efd' : '#666'} 
+              <Ionicons
+                name="ticket-outline"
+                size={20}
+                color={activeTab === 'tab1' ? '#0d6efd' : '#666'}
                 style={styles.tabIcon}
               />
               <Text style={[styles.tabText, activeTab === 'tab1' && styles.activeTabText]}>Tokens</Text>
@@ -53,10 +51,10 @@ export default function Index() {
               onPress={() => setActiveTab('tab2')}
               activeOpacity={0.7}
             >
-              <Ionicons 
-                name="time-outline" 
-                size={20} 
-                color={activeTab === 'tab2' ? '#0d6efd' : '#666'} 
+              <Ionicons
+                name="time-outline"
+                size={20}
+                color={activeTab === 'tab2' ? '#0d6efd' : '#666'}
                 style={styles.tabIcon}
               />
               <Text style={[styles.tabText, activeTab === 'tab2' && styles.activeTabText]}>History</Text>
@@ -75,9 +73,7 @@ export default function Index() {
                 priceInput={priceInput}
               />
             )}
-            {activeTab === 'tab2' && (
-              <HistoryList history={history} event={event} />
-            )}
+            {activeTab === 'tab2' && <HistoryList history={history} event={event} />}
           </View>
         </View>
       </View>

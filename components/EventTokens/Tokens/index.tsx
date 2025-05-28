@@ -118,31 +118,19 @@ export default function Tokens({
   return (
     <Pressable
       onPress={handlePress}
-      style={({ pressed }) => [
-        styles.container,
-        pressed && styles.pressed,
-      ]}
+      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
     >
       <View style={styles.tokenWrapper}>
         {tokenValue === TokenValue.NONE && (
-          <Image
-            source={require('@/assets/images/tokens/full_blue.png')}
-            style={styles.image}
-          />
+          <Image source={require('@/assets/images/tokens/full_blue.png')} style={styles.image} />
         )}
         {tokenValue === TokenValue.HALF && (
-          <Image
-            source={require('@/assets/images/tokens/full_blue_half_selected.png')}
-            style={styles.image}
-          />
+          <Image source={require('@/assets/images/tokens/full_blue_half_selected.png')} style={styles.image} />
         )}
         {tokenValue === TokenValue.FULL && (
-          <Image
-            source={require('@/assets/images/tokens/full_blue_selected.png')}
-            style={styles.image}
-          />
+          <Image source={require('@/assets/images/tokens/full_blue_selected.png')} style={styles.image} />
         )}
       </View>
     </Pressable>

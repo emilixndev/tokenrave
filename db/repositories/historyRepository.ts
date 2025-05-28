@@ -13,9 +13,8 @@ export const addExpenseToHistory = async (
   db: SQLiteDatabase,
   amountToken: number,
   idEvent: number,
-  expenseType:ExpenseType,
+  expenseType: ExpenseType
 ): Promise<SQLiteRunResult> => {
   return await db.runAsync(`INSERT INTO history (created_at, amount, events_reference, expense_type)
                         values (datetime('now','localtime'), ${amountToken}, ${idEvent}, '${expenseType}')`);
 };
-

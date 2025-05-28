@@ -7,17 +7,12 @@ export default function ButtonWithBadge() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => setCounter(counter + 1)}
-      >
+      <TouchableOpacity style={styles.button} onPress={() => setCounter(counter + 1)}>
         <Airplay size={24} color="#000" />
       </TouchableOpacity>
       {counter > 0 && (
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>
-            {counter > 99 ? '99+' : counter}
-          </Text>
+          <Text style={styles.badgeText}>{counter > 99 ? '99+' : counter}</Text>
         </View>
       )}
     </View>

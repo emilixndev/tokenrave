@@ -99,25 +99,16 @@ export default function HalfTokens({
   return (
     <Pressable
       onPress={handlePress}
-      style={({ pressed }) => [
-        styles.container,
-        pressed && styles.pressed,
-      ]}
+      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
     >
       <View style={styles.tokenWrapper}>
         {tokenValue === HalfTokenValue.NONE && (
-          <Image
-            source={require('@/assets/images/tokens/half_blue.png')}
-            style={styles.image}
-          />
+          <Image source={require('@/assets/images/tokens/half_blue.png')} style={styles.image} />
         )}
         {tokenValue === HalfTokenValue.FULL && (
-          <Image
-            source={require('@/assets/images/tokens/half_blue_selected.png')}
-            style={styles.image}
-          />
+          <Image source={require('@/assets/images/tokens/half_blue_selected.png')} style={styles.image} />
         )}
       </View>
     </Pressable>

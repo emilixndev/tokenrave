@@ -47,7 +47,7 @@ export default function HistoryList({ history, event }: HistoryListProps) {
             </View>
             <View style={styles.statsDivider} />
             <View style={styles.statsCard}>
-              <Text style={styles.statsValue}>{Math.round(totalExpense* 100) / 100}€</Text>
+              <Text style={styles.statsValue}>{Math.round(totalExpense * 100) / 100}€</Text>
               <Text style={styles.statsLabel}>Total Spent</Text>
             </View>
           </View>

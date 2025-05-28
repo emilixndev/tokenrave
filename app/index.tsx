@@ -31,10 +31,7 @@ export default function Index() {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {events.length > 0 ? (
           events.map((value: EventType, index) => (
-            <View
-              key={value.id}
-              style={styles.cardWrapper}
-            >
+            <View key={value.id} style={styles.cardWrapper}>
               <Link
                 href={{
                   pathname: '/events/[id]',

@@ -1,4 +1,13 @@
-import { NativeSyntheticEvent, TextInputChangeEventData, Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+  Modal,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import ButtonWithBadge from '@/components/common/ButtonWithBadge';
 import { EventType } from '@/db/types/eventType';
 import { useState } from 'react';
@@ -21,10 +30,7 @@ export default function AddExpenseModal({
   return (
     <>
       <TouchableOpacity
-        style={[
-          styles.addButton,
-          (!event || event.token_price <= 0) && styles.disabledButton
-        ]}
+        style={[styles.addButton, (!event || event.token_price <= 0) && styles.disabledButton]}
         onPress={() => setModalVisible(true)}
         disabled={!event || event.token_price <= 0}
       >
@@ -54,9 +60,7 @@ export default function AddExpenseModal({
               />
             </View>
 
-            <Text style={styles.expenseText}>
-              Your expense represent {tokenExpenseInput * event.token_price} €
-            </Text>
+            <Text style={styles.expenseText}>Your expense represent {tokenExpenseInput * event.token_price} €</Text>
 
             <View style={styles.badgeContainer}>
               <ButtonWithBadge />
@@ -74,10 +78,7 @@ export default function AddExpenseModal({
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setModalVisible(false)}
-            >
+            <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
               x
             </TouchableOpacity>
           </View>

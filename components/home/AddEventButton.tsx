@@ -1,5 +1,16 @@
 import { useState } from 'react';
-import { Keyboard, NativeSyntheticEvent, TextInputChangeEventData, Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import {
+  Keyboard,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+  Modal,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Animated,
+} from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
 import { addNewEvent } from '@/db/repositories/eventRepository';
 import { Ionicons } from '@expo/vector-icons';
@@ -63,10 +74,7 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Create New Event</Text>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setModalVisible(false)}
-              >
+              <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
                 <Ionicons name="close" size={24} color="#666" />
               </TouchableOpacity>
             </View>
@@ -93,10 +101,7 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
             </View>
 
             <TouchableOpacity
-              style={[
-                styles.saveButton,
-                { opacity: btnOpacity }
-              ]}
+              style={[styles.saveButton, { opacity: btnOpacity }]}
               onPress={addEvent}
               disabled={disabledBtn}
               activeOpacity={0.8}

@@ -48,7 +48,6 @@ const useTokenManagement = (id: number) => {
 
   function saveExpense(tokenExpenseCount: number) {
     if (event) {
-      console.log(ExpenseType.TOKEN_SPEND);
       addExpenseToHistory(database, tokenExpenseCount, Number(id), ExpenseType.TOKEN_SPEND);
 
       updateTokenAmountAndTotalPriceWithExpense(

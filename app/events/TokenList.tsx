@@ -13,10 +13,17 @@ interface TokenListProps {
   setTokenInput: (token: number) => void;
   setPriceInput: (price: number) => void;
   addToken: () => void;
-  priceInput:number;
+  priceInput: number;
 }
 
-export default function TokenList({ event, saveExpense, setTokenInput, setPriceInput, addToken,priceInput }: TokenListProps) {
+export default function TokenList({
+  event,
+  saveExpense,
+  setTokenInput,
+  setPriceInput,
+  addToken,
+  priceInput,
+}: TokenListProps) {
   const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter, isPreviousToken } =
     useTokenSelection();
   const [resetSelection, setResetSelection] = useState(false);
@@ -56,16 +63,16 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
                   <Text style={styles.statsLabel}>Price/Token</Text>
                 </View>
               </View>
-                <TokensGrid
-                  numberOfTokens={event.token_count}
-                  addTokenToCounter={addTokenToCounter}
-                  removeTokenToCounter={removeTokenToCounter}
-                  resetSelection={resetSelection}
-                  setReloadTokens={reloadTokensTest}
-                  reloadTokens={reloadTokens}
-                  selectedToken={selectedToken}
-                  isPreviousToken={isPreviousToken}
-                />
+              <TokensGrid
+                numberOfTokens={event.token_count}
+                addTokenToCounter={addTokenToCounter}
+                removeTokenToCounter={removeTokenToCounter}
+                resetSelection={resetSelection}
+                setReloadTokens={reloadTokensTest}
+                reloadTokens={reloadTokens}
+                selectedToken={selectedToken}
+                isPreviousToken={isPreviousToken}
+              />
             </>
           ) : (
             <View style={styles.emptyState}>
@@ -97,7 +104,13 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
         )}
 
         <View style={styles.buttonContainer}>
-          <AddTokenModal addToken={addToken} setTokenInput={setTokenInput} setPriceInput={setPriceInput} event={event} priceInput={priceInput}/>
+          <AddTokenModal
+            addToken={addToken}
+            setTokenInput={setTokenInput}
+            setPriceInput={setPriceInput}
+            event={event}
+            priceInput={priceInput}
+          />
           {event && (
             <TouchableOpacity
               style={[styles.addExpenseButton, tokenCounter === 0 && styles.disabledButton]}
