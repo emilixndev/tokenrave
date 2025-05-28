@@ -1,7 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, Image, StyleSheet, GestureResponderEvent } from 'react-native';
+import { Pressable, Image, StyleSheet, GestureResponderEvent, View } from 'react-native';
 import TokenValue from '@/Enums/TokenValueEnum';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 4,
+    borderRadius: 18,
+    backgroundColor: 'transparent',
+    padding: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pressed: {
+    backgroundColor: 'transparent',
+    transform: [{ scale: 0.96 }],
+  },
+  tokenWrapper: {
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  image: {
+    width: 48,
+    height: 48,
+  },
+});
 
 interface TokensProps {
   addTokenToCounter: (amount: number) => void;
@@ -27,6 +50,7 @@ export default function Tokens({
   isPreviousToken,
 }: TokensProps) {
   const [tokenValue, setTokenValue] = useState<TokenValue>(TokenValue.NONE);
+  const [pressed, setPressed] = useState(false);
 
   //? Triggered each time the ui need to be cleared
   useEffect(() => {
@@ -62,12 +86,12 @@ export default function Tokens({
 
   function handlePress(event: GestureResponderEvent) {
     //? Location used to select half or full token
-    const { locationX, locationY } = event.nativeEvent;
+    const { locationX } = event.nativeEvent;
     setReloadTokens({ tokenId: tokenId, rowId: rowId });
 
     switch (tokenValue) {
       case TokenValue.NONE:
-        if (locationX > 25) {
+        if (locationX > 30) {
           setTokenValue(TokenValue.FULL);
           addTokenToCounter(1);
           break;
@@ -78,10 +102,9 @@ export default function Tokens({
       case TokenValue.HALF:
         setTokenValue(TokenValue.FULL);
         addTokenToCounter(0.5);
-
         break;
       case TokenValue.FULL:
-        if (locationX < 25) {
+        if (locationX < 30) {
           setTokenValue(TokenValue.HALF);
           removeTokenToCounter(0.5);
         }
@@ -93,35 +116,35 @@ export default function Tokens({
   }
 
   return (
-    <Pressable onPress={handlePress} style={styles.container}>
-      {tokenValue === TokenValue.NONE && (
-        <Image
-          source={require('@/assets/images/tokens/full_blue.png')}
-          style={styles.image}
-        />
-      )}
-      {tokenValue === TokenValue.HALF && (
-        <Image
-          source={require('@/assets/images/tokens/full_blue_half_selected.png')}
-          style={styles.image}
-        />
-      )}
-      {tokenValue === TokenValue.FULL && (
-        <Image
-          source={require('@/assets/images/tokens/full_blue_selected.png')}
-          style={styles.image}
-        />
-      )}
+    <Pressable
+      onPress={handlePress}
+      style={({ pressed }) => [
+        styles.container,
+        pressed && styles.pressed,
+      ]}
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+    >
+      <View style={styles.tokenWrapper}>
+        {tokenValue === TokenValue.NONE && (
+          <Image
+            source={require('@/assets/images/tokens/full_blue.png')}
+            style={styles.image}
+          />
+        )}
+        {tokenValue === TokenValue.HALF && (
+          <Image
+            source={require('@/assets/images/tokens/full_blue_half_selected.png')}
+            style={styles.image}
+          />
+        )}
+        {tokenValue === TokenValue.FULL && (
+          <Image
+            source={require('@/assets/images/tokens/full_blue_selected.png')}
+            style={styles.image}
+          />
+        )}
+      </View>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 4,
-  },
-  image: {
-    width: 50,
-    height: 50,
-  },
-});

@@ -1,15 +1,31 @@
 import { useState } from 'react';
-import { Keyboard, NativeSyntheticEvent, TextInputChangeEventData, Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Keyboard, NativeSyntheticEvent, TextInputChangeEventData, Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
 import { addNewEvent } from '@/db/repositories/eventRepository';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => void }) {
   const [nameTxt, setNameTxt] = useState('');
   const [btnOpacity, setBtnOpacity] = useState(0.5);
   const [disabledBtn, setDisabledBtn] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [scaleAnim] = useState(new Animated.Value(1));
 
   const database = useSQLiteContext();
+
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
 
   async function addEvent() {
     if (!nameTxt.trim()) {
@@ -24,12 +40,18 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.buttonText}>Add new event</Text>
-      </TouchableOpacity>
+      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => setModalVisible(true)}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="add" size={24} color="white" style={styles.addIcon} />
+          <Text style={styles.buttonText}>New Event</Text>
+        </TouchableOpacity>
+      </Animated.View>
 
       <Modal
         animationType="fade"
@@ -39,14 +61,22 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>New event</Text>
-            <Text style={styles.modalDescription}>Add a new event to your list</Text>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Create New Event</Text>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Name :</Text>
+              <Text style={styles.label}>Event Name</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Event name"
+                placeholder="Enter event name"
+                placeholderTextColor="#999"
                 onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                   if (e.nativeEvent.text.trim()) {
                     setBtnOpacity(1);
@@ -58,27 +88,20 @@ export default function AddEventButton({ onEventAdded }: { onEventAdded?: () => 
                   setNameTxt(e.nativeEvent.text);
                 }}
                 maxLength={30}
+                autoFocus
               />
             </View>
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={[
-                  styles.saveButton,
-                  { opacity: btnOpacity }
-                ]}
-                onPress={addEvent}
-                disabled={disabledBtn}
-              >
-                <Text style={styles.saveButtonText}>Save changes</Text>
-              </TouchableOpacity>
-            </View>
-
             <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setModalVisible(false)}
+              style={[
+                styles.saveButton,
+                { opacity: btnOpacity }
+              ]}
+              onPress={addEvent}
+              disabled={disabledBtn}
+              activeOpacity={0.8}
             >
-             <Text>x</Text>
+              <Text style={styles.saveButtonText}>Create Event</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -97,17 +120,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addButton: {
-    width: '50%',
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#0d6efd',
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#0d6efd',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  addIcon: {
+    marginRight: 8,
   },
   buttonText: {
     color: 'white',
-    textAlign: 'center',
     fontSize: 16,
+    fontWeight: '600',
   },
   modalOverlay: {
     flex: 1,
@@ -116,68 +150,59 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    width: '95%',
+    width: '90%',
     backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 20,
+    borderRadius: 20,
+    padding: 24,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 4,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
+    color: '#1a1a1a',
   },
-  modalDescription: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 16,
+  closeButton: {
+    padding: 4,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 24,
   },
   label: {
-    marginRight: 8,
     fontSize: 16,
+    fontWeight: '600',
+    color: '#1a1a1a',
+    marginBottom: 8,
   },
   input: {
-    flex: 1,
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 4,
-    padding: 8,
+    borderRadius: 12,
+    padding: 12,
     fontSize: 16,
-  },
-  buttonContainer: {
-    alignItems: 'flex-end',
+    backgroundColor: '#f8f9fa',
   },
   saveButton: {
     backgroundColor: '#0d6efd',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 4,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
   },
   saveButtonText: {
     color: 'white',
     fontSize: 16,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    backgroundColor: '#dc3545',
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontWeight: '600',
   },
 });

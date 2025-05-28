@@ -61,8 +61,8 @@ export default function TokensGrid({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
-    paddingHorizontal: 8,
+    marginTop: 12,
+    paddingHorizontal: 4,
     alignItems: 'center',
   },
 });

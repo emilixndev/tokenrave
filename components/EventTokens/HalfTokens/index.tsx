@@ -1,7 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, Image, StyleSheet } from 'react-native';
+import { Pressable, Image, StyleSheet, View } from 'react-native';
 import HalfTokenValue from '@/Enums/HalfTokenValueEnum';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 4,
+    borderRadius: 18,
+    backgroundColor: 'transparent',
+    padding: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pressed: {
+    backgroundColor: 'transparent',
+    transform: [{ scale: 0.96 }],
+  },
+  tokenWrapper: {
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  image: {
+    width: 48,
+    height: 48,
+  },
+});
 
 interface HalfTokensProps {
   addTokenToCounter: (amount: number) => void;
@@ -27,6 +50,7 @@ export default function HalfTokens({
   isPreviousToken,
 }: HalfTokensProps) {
   const [tokenValue, setTokenValue] = useState<HalfTokenValue>(HalfTokenValue.NONE);
+  const [pressed, setPressed] = useState(false);
 
   //? Triggered each time the ui need to be cleared
   useEffect(() => {
@@ -73,30 +97,29 @@ export default function HalfTokens({
   }
 
   return (
-    <Pressable onPress={handlePress} style={styles.container}>
-      {tokenValue === HalfTokenValue.NONE && (
-        <Image
-          source={require('@/assets/images/tokens/half_blue.png')}
-          style={styles.image}
-        />
-      )}
-
-      {tokenValue === HalfTokenValue.FULL && (
-        <Image
-          source={require('@/assets/images/tokens/half_blue_selected.png')}
-          style={styles.image}
-        />
-      )}
+    <Pressable
+      onPress={handlePress}
+      style={({ pressed }) => [
+        styles.container,
+        pressed && styles.pressed,
+      ]}
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+    >
+      <View style={styles.tokenWrapper}>
+        {tokenValue === HalfTokenValue.NONE && (
+          <Image
+            source={require('@/assets/images/tokens/half_blue.png')}
+            style={styles.image}
+          />
+        )}
+        {tokenValue === HalfTokenValue.FULL && (
+          <Image
+            source={require('@/assets/images/tokens/half_blue_selected.png')}
+            style={styles.image}
+          />
+        )}
+      </View>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 4,
-  },
-  image: {
-    width: 50,
-    height: 50,
-  },
-});

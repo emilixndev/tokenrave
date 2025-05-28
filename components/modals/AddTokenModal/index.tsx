@@ -1,5 +1,7 @@
+import React from 'react';
 import { NativeSyntheticEvent, TextInputChangeEventData, Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 interface addTokenModalProps {
   setTokenInput: (token: number) => void;
@@ -15,6 +17,7 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => setModalVisible(true)}
+        activeOpacity={0.8}
       >
         <Text style={styles.buttonText}>Add Token</Text>
       </TouchableOpacity>
@@ -27,15 +30,24 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add token</Text>
-            <Text style={styles.modalDescription}>Add token to your wallet</Text>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Add Token</Text>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.modalDescription}>Add tokens to your wallet</Text>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Number of token :</Text>
+              <Text style={styles.label}>Number of tokens</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
-                placeholder="xx"
+                placeholder="e.g. 10"
+                placeholderTextColor="#999"
                 onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                   setTokenInput(parseInt(e.nativeEvent.text));
                 }}
@@ -43,34 +55,27 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Price in € :</Text>
+              <Text style={styles.label}>Price in €</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
-                placeholder="xx,xx"
+                placeholder="e.g. 2.50"
+                placeholderTextColor="#999"
                 onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                   setPriceInput(parseFloat(e.nativeEvent.text));
                 }}
               />
             </View>
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.saveButton}
-                onPress={() => {
-                  addToken();
-                  setModalVisible(false);
-                }}
-              >
-                <Text style={styles.saveButtonText}>Save changes</Text>
-              </TouchableOpacity>
-            </View>
-
             <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setModalVisible(false)}
+              style={styles.saveButton}
+              onPress={() => {
+                addToken();
+                setModalVisible(false);
+              }}
+              activeOpacity={0.8}
             >
-              <Text>x</Text>
+              <Text style={styles.saveButtonText}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -81,14 +86,24 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
 
 const styles = StyleSheet.create({
   addButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#0d6efd',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 4,
+    paddingVertical: 12,
+    paddingHorizontal: 22,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 5,
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
+    fontWeight: '600',
   },
   modalOverlay: {
     flex: 1,
@@ -97,68 +112,62 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    width: '95%',
+    width: '90%',
     backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 20,
+    borderRadius: 20,
+    padding: 24,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.18,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 8,
+    color: '#1a1a1a',
+  },
+  closeButton: {
+    padding: 4,
   },
   modalDescription: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#666',
-    marginBottom: 16,
+    marginBottom: 18,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 18,
   },
   label: {
-    marginRight: 8,
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#1a1a1a',
+    marginBottom: 6,
   },
   input: {
-    flex: 1,
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 4,
-    padding: 8,
+    borderRadius: 12,
+    padding: 12,
     fontSize: 16,
-  },
-  buttonContainer: {
-    alignItems: 'flex-end',
+    backgroundColor: '#f8f9fa',
   },
   saveButton: {
     backgroundColor: '#0d6efd',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 4,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 8,
   },
   saveButtonText: {
     color: 'white',
     fontSize: 16,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    backgroundColor: '#dc3545',
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontWeight: '600',
   },
 });

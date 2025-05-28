@@ -5,6 +5,7 @@ import { EventType } from '@/db/types/eventType';
 import useTokenSelection from '@/hooks/useTokenSelection';
 import TokensGrid from '@/components/EventTokens/TokensGrid';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
+import { Ionicons } from '@expo/vector-icons';
 
 interface TokenListProps {
   event: EventType | null;
@@ -35,45 +36,60 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
-        {event && (
-          <>
-            <View style={styles.headerContainer}>
-              <View style={styles.headerItem}>
-                <Text style={styles.headerText}>
-                  {Math.round(event.total_price * 100) / 100} €
-                </Text>
+        {event ? (
+          event.token_count > 0 ? (
+            <>
+              <View style={styles.statsHeader}>
+                <View style={styles.statsCard}>
+                  <Text style={styles.statsValue}>{Math.round(event.total_price * 100) / 100}€</Text>
+                  <Text style={styles.statsLabel}>Total</Text>
+                </View>
+                <View style={styles.statsDivider} />
+                <View style={styles.statsCard}>
+                  <Text style={styles.statsValue}>{event.token_count}</Text>
+                  <Text style={styles.statsLabel}>Tokens</Text>
+                </View>
+                <View style={styles.statsDivider} />
+                <View style={styles.statsCard}>
+                  <Text style={styles.statsValue}>{Math.round(event.token_price * 100) / 100}€</Text>
+                  <Text style={styles.statsLabel}>Price/Token</Text>
+                </View>
               </View>
-              <View style={styles.headerItem}>
-                <Text style={styles.headerText}>
-                  {event.token_count} T
-                </Text>
-              </View>
-              <View style={styles.headerItem}>
-                <Text style={styles.headerText}>
-                  1T/{Math.round(event.token_price * 100) / 100}€{' '}
-                </Text>
-              </View>
+              <TokensGrid
+                numberOfTokens={event.token_count}
+                addTokenToCounter={addTokenToCounter}
+                removeTokenToCounter={removeTokenToCounter}
+                resetSelection={resetSelection}
+                setReloadTokens={reloadTokensTest}
+                reloadTokens={reloadTokens}
+                selectedToken={selectedToken}
+                isPreviousToken={isPreviousToken}
+              />
+            </>
+          ) : (
+            <View style={styles.emptyState}>
+              <Ionicons name="ticket-outline" size={48} color="#b0b8c1" />
+              <Text style={styles.noTokensText}>No tokens yet</Text>
+              <Text style={styles.emptyStateSubtext}>Add tokens to start managing your event</Text>
             </View>
-            <TokensGrid
-              numberOfTokens={event.token_count}
-              addTokenToCounter={addTokenToCounter}
-              removeTokenToCounter={removeTokenToCounter}
-              resetSelection={resetSelection}
-              setReloadTokens={reloadTokensTest}
-              reloadTokens={reloadTokens}
-              selectedToken={selectedToken}
-              isPreviousToken={isPreviousToken}
-            />
-          </>
-        )}
+          )
+        ) : null}
       </ScrollView>
 
       <View style={styles.bottomContainer}>
         {tokenCounter > 0 && event && (
           <View style={styles.tokenCounterContainer}>
-            <Text style={styles.tokenCounterText}>
-              {tokenCounter} Token / {Math.round(event.token_price * tokenCounter * 100) / 100}€
-            </Text>
+            <View style={styles.tokenCounterContent}>
+              <View style={styles.tokenCounterLeft}>
+                <Text style={styles.tokenCounterLabel}>Selected</Text>
+                <Text style={styles.tokenCounterValue}>{tokenCounter} Token</Text>
+              </View>
+              <View style={styles.tokenCounterDivider} />
+              <View style={styles.tokenCounterRight}>
+                <Text style={styles.tokenCounterLabel}>Total</Text>
+                <Text style={styles.tokenCounterValue}>{Math.round(event.token_price * tokenCounter * 100) / 100}€</Text>
+              </View>
+            </View>
           </View>
         )}
 
@@ -132,30 +148,64 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   tokenCounterContainer: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    backgroundColor: '#f8f9fa',
     borderTopWidth: 1,
     borderColor: '#e0e0e0',
   },
-  tokenCounterText: {
-    fontSize: 16,
+  tokenCounterContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tokenCounterLeft: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  tokenCounterRight: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  tokenCounterLabel: {
+    fontSize: 11,
+    color: '#666',
+    marginBottom: 2,
+  },
+  tokenCounterValue: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#0d6efd',
+  },
+  tokenCounterDivider: {
+    width: 1,
+    height: 24,
+    backgroundColor: '#e0e0e0',
+    marginHorizontal: 16,
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     padding: 12,
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderColor: '#e0e0e0',
+    gap: 12,
   },
   addExpenseButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#0d6efd',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 4,
+    paddingVertical: 12,
+    paddingHorizontal: 22,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 5,
   },
   disabledButton: {
     opacity: 0.5,
@@ -163,5 +213,55 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
+    fontWeight: '600',
+  },
+  statsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: '#fff',
+    marginBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  statsCard: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  statsLabel: {
+    fontSize: 11,
+    color: '#666',
+    marginTop: 2,
+  },
+  statsValue: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#1a1a1a',
+  },
+  statsDivider: {
+    width: 1,
+    height: 20,
+    backgroundColor: '#e0e0e0',
+    marginHorizontal: 8,
+  },
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 60,
+  },
+  noTokensText: {
+    textAlign: 'center',
+    marginTop: 18,
+    fontSize: 18,
+    color: '#1a1a1a',
+    fontWeight: '600',
+  },
+  emptyStateSubtext: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 2,
+    paddingHorizontal: 32,
   },
 });

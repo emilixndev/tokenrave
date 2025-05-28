@@ -64,8 +64,9 @@ export default function TokensRow({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     width: '100%',
-    marginBottom: 6,
+    marginBottom: 4,
+    paddingHorizontal: 4,
   },
 });
