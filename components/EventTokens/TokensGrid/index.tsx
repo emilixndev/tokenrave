@@ -64,5 +64,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingHorizontal: 4,
     alignItems: 'center',
+    marginBottom: 80,
   },
 });

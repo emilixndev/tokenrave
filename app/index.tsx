@@ -31,10 +31,10 @@ export default function Index() {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {events.length > 0 ? (
           events.map((value: EventType, index) => (
-            <View key={value.id} style={[
-              styles.cardWrapper,
-              index % 2 === 0 ? styles.cardWrapperEven : styles.cardWrapperOdd
-            ]}>
+            <View
+              key={value.id}
+              style={styles.cardWrapper}
+            >
               <Link
                 href={{
                   pathname: '/events/[id]',
@@ -42,20 +42,15 @@ export default function Index() {
                 }}
                 asChild
               >
-                <Pressable style={({ pressed }) => [
-                  styles.card,
-                  pressed && styles.cardPressed
-                ]}>
+                <Pressable style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}>
                   <View style={styles.cardContent}>
                     <View style={styles.cardLeft}>
                       <Text style={styles.eventName}>
-                        {value.name.substring(0,26) + (value.name.length > 26 ? '...' : '')}
+                        {value.name.substring(0, 26) + (value.name.length > 26 ? '...' : '')}
                       </Text>
                       <View style={styles.tokenInfo}>
                         <Ionicons name="ticket-outline" size={16} color="#666" />
-                        <Text style={styles.tokenCount}>
-                          {value.token_count} tokens remaining
-                        </Text>
+                        <Text style={styles.tokenCount}>{value.token_count} tokens remaining</Text>
                       </View>
                     </View>
                     <Ionicons name="chevron-forward" size={24} color="#666" />
@@ -108,13 +103,9 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 16,
     overflow: 'hidden',
-  },
-  cardWrapperEven: {
     backgroundColor: '#fff',
   },
-  cardWrapperOdd: {
-    backgroundColor: '#f0f4fa',
-  },
+
   card: {
     backgroundColor: 'transparent',
     borderRadius: 16,

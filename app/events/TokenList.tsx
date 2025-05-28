@@ -55,22 +55,22 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
                   <Text style={styles.statsLabel}>Price/Token</Text>
                 </View>
               </View>
-              <TokensGrid
-                numberOfTokens={event.token_count}
-                addTokenToCounter={addTokenToCounter}
-                removeTokenToCounter={removeTokenToCounter}
-                resetSelection={resetSelection}
-                setReloadTokens={reloadTokensTest}
-                reloadTokens={reloadTokens}
-                selectedToken={selectedToken}
-                isPreviousToken={isPreviousToken}
-              />
+                <TokensGrid
+                  numberOfTokens={event.token_count}
+                  addTokenToCounter={addTokenToCounter}
+                  removeTokenToCounter={removeTokenToCounter}
+                  resetSelection={resetSelection}
+                  setReloadTokens={reloadTokensTest}
+                  reloadTokens={reloadTokens}
+                  selectedToken={selectedToken}
+                  isPreviousToken={isPreviousToken}
+                />
             </>
           ) : (
             <View style={styles.emptyState}>
               <Ionicons name="ticket-outline" size={48} color="#b0b8c1" />
               <Text style={styles.noTokensText}>No tokens yet</Text>
-              <Text style={styles.emptyStateSubtext}>Add tokens to start managing your event</Text>
+              <Text style={styles.emptyStateSubtext}>Add tokens to begin your journey</Text>
             </View>
           )
         ) : null}
@@ -87,24 +87,19 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
               <View style={styles.tokenCounterDivider} />
               <View style={styles.tokenCounterRight}>
                 <Text style={styles.tokenCounterLabel}>Total</Text>
-                <Text style={styles.tokenCounterValue}>{Math.round(event.token_price * tokenCounter * 100) / 100}€</Text>
+                <Text style={styles.tokenCounterValue}>
+                  {Math.round(event.token_price * tokenCounter * 100) / 100}€
+                </Text>
               </View>
             </View>
           </View>
         )}
 
         <View style={styles.buttonContainer}>
-          <AddTokenModal
-            addToken={addToken}
-            setTokenInput={setTokenInput}
-            setPriceInput={setPriceInput}
-          />
+          <AddTokenModal addToken={addToken} setTokenInput={setTokenInput} setPriceInput={setPriceInput} />
           {event && (
             <TouchableOpacity
-              style={[
-                styles.addExpenseButton,
-                tokenCounter === 0 && styles.disabledButton
-              ]}
+              style={[styles.addExpenseButton, tokenCounter === 0 && styles.disabledButton]}
               onPress={tokenCounter !== 0 ? saveNewExpense : undefined}
               disabled={tokenCounter === 0}
             >

@@ -81,6 +81,7 @@ export default function HistoryList({ history }: HistoryListProps) {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 12,
     flex: 1,
     backgroundColor: '#fff',
   },

@@ -46,7 +46,7 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
-                placeholder="e.g. 10"
+                placeholder="0"
                 placeholderTextColor="#999"
                 onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                   setTokenInput(parseInt(e.nativeEvent.text));
@@ -59,7 +59,7 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
-                placeholder="e.g. 2.50"
+                placeholder="0.00"
                 placeholderTextColor="#999"
                 onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                   setPriceInput(parseFloat(e.nativeEvent.text));
