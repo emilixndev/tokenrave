@@ -9,6 +9,7 @@ import {
   updateTokenAmountAndTotalPriceWithExpense,
   updateTokenPrice,
 } from '@/db/repositories/eventRepository';
+import ExpenseType from '@/Enums/ExpenseTypeEnum';
 
 const useTokenManagement = (id: number) => {
   const database = useSQLiteContext();
@@ -38,14 +39,17 @@ const useTokenManagement = (id: number) => {
   async function addToken() {
     await updateTokenAmountAndTotalPrice(database, tokenInput, priceInput, Number(id));
     await updateTokenPrice(database, Number(id));
+    await addExpenseToHistory(database, tokenInput, Number(id), ExpenseType.TOKEN_PURCHASE);
     setTokenInput(0);
     setPriceInput(0);
     await getEvent();
+    await getHistory();
   }
 
   function saveExpense(tokenExpenseCount: number) {
     if (event) {
-      addExpenseToHistory(database, tokenExpenseCount, Number(id));
+      console.log(ExpenseType.TOKEN_SPEND);
+      addExpenseToHistory(database, tokenExpenseCount, Number(id), ExpenseType.TOKEN_SPEND);
 
       updateTokenAmountAndTotalPriceWithExpense(
         database,

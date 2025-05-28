@@ -19,6 +19,7 @@ export const initSchema = async (db: SQLiteDatabase) => {
             amount BIGINT NOT NULL,
             purchasable_items_reference INTEGER,
             events_reference INTEGER,
+            expense_type TEXT NOT NULL,
             FOREIGN KEY (events_reference) REFERENCES events(id)
             );
   `);

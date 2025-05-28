@@ -76,7 +76,7 @@ export default function Index() {
               />
             )}
             {activeTab === 'tab2' && (
-              <HistoryList history={history} />
+              <HistoryList history={history} event={event} />
             )}
           </View>
         </View>

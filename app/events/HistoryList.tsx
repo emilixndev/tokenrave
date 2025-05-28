@@ -1,13 +1,16 @@
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { HistoryType } from '@/db/types/historyType';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import ExpenseType from '@/Enums/ExpenseTypeEnum';
+import { EventType } from '@/db/types/eventType';
 
 interface HistoryListProps {
   history: HistoryType[];
+  event: EventType | null;
 }
 
-export default function HistoryList({ history }: HistoryListProps) {
+export default function HistoryList({ history, event }: HistoryListProps) {
   function isNotTheSameDay(date1: Date, date2: Date) {
     return (
       date1.getDate() !== date2.getDate() ||
@@ -16,24 +19,42 @@ export default function HistoryList({ history }: HistoryListProps) {
     );
   }
 
+  const [totalTokens, setTotalTokens] = useState<number>(0);
+  const [totalExpense, setTotalExpense] = useState<number>(0.0);
+
+  useEffect(() => {
+    setTotalTokens(
+      history
+        .filter((item) => item.expense_type === ExpenseType.TOKEN_SPEND)
+        .reduce((sum, item) => sum + item.amount, 0)
+    );
+  }, [history]);
+
+  useEffect(() => {
+    if (event) {
+      setTotalExpense(totalTokens * event?.token_price);
+    }
+  }, [totalTokens]);
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {history && history.length > 0 ? (
         <>
           <View style={styles.statsHeader}>
             <View style={styles.statsCard}>
-              <Text style={styles.statsValue}>42</Text>
+              <Text style={styles.statsValue}>{totalTokens}</Text>
               <Text style={styles.statsLabel}>Total Tokens</Text>
             </View>
             <View style={styles.statsDivider} />
             <View style={styles.statsCard}>
-              <Text style={styles.statsValue}>84.00€</Text>
+              <Text style={styles.statsValue}>{Math.round(totalExpense* 100) / 100}€</Text>
               <Text style={styles.statsLabel}>Total Spent</Text>
             </View>
           </View>
           {history.map((value: HistoryType, index) => (
             <View key={value.id}>
-              {((index === 0) || isNotTheSameDay(new Date(value.created_at), new Date(history[index - 1].created_at))) && (
+              {(index === 0 ||
+                isNotTheSameDay(new Date(value.created_at), new Date(history[index - 1].created_at))) && (
                 <View style={styles.dateHeaderContainer}>
                   <Text style={styles.dateHeader}>
                     {new Date(value.created_at).toLocaleDateString('en-EN', {
@@ -54,13 +75,17 @@ export default function HistoryList({ history }: HistoryListProps) {
                       </Text>
                     </View>
                     <View>
-                      <View style={styles.tokenContainer}>
-                        <Text style={styles.tokenAmount}>- {value.amount}</Text>
-                        <Image
-                          source={require('@/assets/images/tokens/full_blue.png')}
-                          style={styles.tokenImage}
-                        />
-                      </View>
+                      {value.expense_type === ExpenseType.TOKEN_SPEND ? (
+                        <View style={styles.tokenContainer}>
+                          <Text style={styles.tokenAmount}>- {value.amount}</Text>
+                          <Image source={require('@/assets/images/tokens/full_blue.png')} style={styles.tokenImage} />
+                        </View>
+                      ) : (
+                        <View style={styles.tokenContainer}>
+                          <Text style={styles.tokenAmountAdd}>+ {value.amount}</Text>
+                          <Image source={require('@/assets/images/tokens/full_blue.png')} style={styles.tokenImage} />
+                        </View>
+                      )}
                     </View>
                   </View>
                 </View>
@@ -135,7 +160,13 @@ const styles = StyleSheet.create({
   tokenAmount: {
     marginRight: 10,
     fontSize: 16,
-    color: '#0d6efd',
+    color: '#d24d57',
+    fontWeight: '600',
+  },
+  tokenAmountAdd: {
+    marginRight: 10,
+    fontSize: 16,
+    color: '#68c3a3',
     fontWeight: '600',
   },
   tokenImage: {
