@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function Index() {
   const { id } = useLocalSearchParams();
-  const { event, history, setTokenInput, setPriceInput, saveExpense, addToken } = useTokenManagement(Number(id));
+  const { event, history, setTokenInput, setPriceInput, saveExpense, addToken,priceInput } = useTokenManagement(Number(id));
   const [activeTab, setActiveTab] = useState('tab1');
 
   return (
@@ -72,6 +72,7 @@ export default function Index() {
                 setTokenInput={setTokenInput}
                 setPriceInput={setPriceInput}
                 addToken={addToken}
+                priceInput={priceInput}
               />
             )}
             {activeTab === 'tab2' && (

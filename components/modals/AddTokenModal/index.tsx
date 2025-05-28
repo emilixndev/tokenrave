@@ -1,24 +1,50 @@
-import React from 'react';
-import { NativeSyntheticEvent, TextInputChangeEventData, Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { EventType } from '@/db/types/eventType';
 
 interface addTokenModalProps {
   setTokenInput: (token: number) => void;
   setPriceInput: (price: number) => void;
   addToken: () => void;
+  event: EventType | null;
+  priceInput: number;
 }
 
-export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }: addTokenModalProps) {
+export default function AddTokenModal({
+  setTokenInput,
+  setPriceInput,
+  addToken,
+  event,
+  priceInput,
+}: addTokenModalProps) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [tokenValue, setTokenValue] = useState('');
+  const [priceValue, setPriceValue] = useState('');
+
+  const handleChangePrice = (txt: string) => {
+    setPriceValue(txt);
+    if (event?.token_price === 0) {
+      const newPrice = txt === '' ? 0 : parseFloat(txt);
+      setPriceInput(newPrice);
+    }
+  };
+
+  const handleChangeToken = (txt: string) => {
+    setTokenValue(txt);
+    const tokenNumber = parseInt(txt) || 0;
+    setTokenInput(tokenNumber);
+
+    if (event && event.token_price !== 0) {
+      const newPrice = event.token_price * tokenNumber;
+      setPriceInput(newPrice);
+      setPriceValue(newPrice.toString());
+    }
+  };
 
   return (
     <>
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => setModalVisible(true)}
-        activeOpacity={0.8}
-      >
+      <TouchableOpacity style={styles.addButton} onPress={() => setModalVisible(true)} activeOpacity={0.8}>
         <Text style={styles.buttonText}>Add Token</Text>
       </TouchableOpacity>
 
@@ -32,10 +58,7 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Add Token</Text>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setModalVisible(false)}
-              >
+              <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
                 <Ionicons name="close" size={24} color="#666" />
               </TouchableOpacity>
             </View>
@@ -48,22 +71,21 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
                 keyboardType="numeric"
                 placeholder="0"
                 placeholderTextColor="#999"
-                onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                  setTokenInput(parseInt(e.nativeEvent.text));
-                }}
+                value={tokenValue}
+                onChangeText={handleChangeToken}
               />
             </View>
 
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Price in €</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, event?.token_price === 0 ? styles.activeText : styles.disabledText]}
+                value={event?.token_price === 0 ? priceValue : priceInput?.toString() || '0'}
                 keyboardType="numeric"
                 placeholder="0.00"
+                editable={event?.token_price === 0}
                 placeholderTextColor="#999"
-                onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                  setPriceInput(parseFloat(e.nativeEvent.text));
-                }}
+                onChangeText={handleChangePrice}
               />
             </View>
 
@@ -72,6 +94,8 @@ export default function AddTokenModal({ setTokenInput, setPriceInput, addToken }
               onPress={() => {
                 addToken();
                 setModalVisible(false);
+                setTokenValue('');
+                setPriceValue('');
               }}
               activeOpacity={0.8}
             >
@@ -169,5 +193,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
+  },
+  disabledText: {
+    opacity: 0.3,
+  },
+  activeText: {
+    opacity: 1,
   },
 });

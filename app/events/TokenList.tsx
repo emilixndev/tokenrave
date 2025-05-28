@@ -13,9 +13,10 @@ interface TokenListProps {
   setTokenInput: (token: number) => void;
   setPriceInput: (price: number) => void;
   addToken: () => void;
+  priceInput:number;
 }
 
-export default function TokenList({ event, saveExpense, setTokenInput, setPriceInput, addToken }: TokenListProps) {
+export default function TokenList({ event, saveExpense, setTokenInput, setPriceInput, addToken,priceInput }: TokenListProps) {
   const { addTokenToCounter, removeTokenToCounter, tokenCounter, resetTokenCounter, isPreviousToken } =
     useTokenSelection();
   const [resetSelection, setResetSelection] = useState(false);
@@ -96,7 +97,7 @@ export default function TokenList({ event, saveExpense, setTokenInput, setPriceI
         )}
 
         <View style={styles.buttonContainer}>
-          <AddTokenModal addToken={addToken} setTokenInput={setTokenInput} setPriceInput={setPriceInput} />
+          <AddTokenModal addToken={addToken} setTokenInput={setTokenInput} setPriceInput={setPriceInput} event={event} priceInput={priceInput}/>
           {event && (
             <TouchableOpacity
               style={[styles.addExpenseButton, tokenCounter === 0 && styles.disabledButton]}
