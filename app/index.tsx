@@ -18,7 +18,7 @@ export default function Index() {
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [events]);
 
   return (
     <View style={styles.container}>
