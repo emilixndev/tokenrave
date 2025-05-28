@@ -1,7 +1,7 @@
 import Tokens from '@/components/EventTokens/Tokens';
-import { View } from 'tamagui';
 import HalfTokens from '@/components/EventTokens/HalfTokens';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
+import { View, StyleSheet } from 'react-native';
 
 interface TokensRowProps {
   numberOfTokensPerLine: number;
@@ -27,7 +27,7 @@ export default function TokensRow({
   isPreviousToken,
 }: TokensRowProps) {
   return (
-    <View flexDirection="row" justifyContent="center" width="100%" marginBottom="$1.5">
+    <View style={styles.container}>
       {[...Array(Math.ceil(numberOfTokensPerLine))].map((x, i) =>
         numberOfTokensPerLine % 1 !== 0 && Math.ceil(numberOfTokensPerLine) - 1 === i ? (
           <HalfTokens
@@ -60,3 +60,12 @@ export default function TokensRow({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+    marginBottom: 6,
+  },
+});

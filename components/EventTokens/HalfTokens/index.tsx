@@ -1,6 +1,5 @@
-import { Image } from 'tamagui';
 import React, { useEffect, useState } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, Image, StyleSheet } from 'react-native';
 import HalfTokenValue from '@/Enums/HalfTokenValueEnum';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
 
@@ -74,26 +73,30 @@ export default function HalfTokens({
   }
 
   return (
-    <Pressable onPress={handlePress} style={{ marginHorizontal: 4 }}>
+    <Pressable onPress={handlePress} style={styles.container}>
       {tokenValue === HalfTokenValue.NONE && (
         <Image
-          source={{
-            uri: require('@/assets/images/tokens/half_blue.png'),
-            width: 50,
-            height: 50,
-          }}
-        ></Image>
+          source={require('@/assets/images/tokens/half_blue.png')}
+          style={styles.image}
+        />
       )}
 
       {tokenValue === HalfTokenValue.FULL && (
         <Image
-          source={{
-            uri: require('@/assets/images/tokens/half_blue_selected.png'),
-            width: 50,
-            height: 50,
-          }}
-        ></Image>
+          source={require('@/assets/images/tokens/half_blue_selected.png')}
+          style={styles.image}
+        />
       )}
     </Pressable>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 4,
+  },
+  image: {
+    width: 50,
+    height: 50,
+  },
+});

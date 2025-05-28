@@ -1,9 +1,7 @@
-import { Image } from 'tamagui';
 import React, { useEffect, useState } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, Image, StyleSheet, GestureResponderEvent } from 'react-native';
 import TokenValue from '@/Enums/TokenValueEnum';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
-import { GestureReponderEvent } from '@tamagui/web';
 
 interface TokensProps {
   addTokenToCounter: (amount: number) => void;
@@ -62,7 +60,7 @@ export default function Tokens({
     }
   }, [reloadTokens]);
 
-  function handlePress(event: GestureReponderEvent) {
+  function handlePress(event: GestureResponderEvent) {
     //? Location used to select half or full token
     const { locationX, locationY } = event.nativeEvent;
     setReloadTokens({ tokenId: tokenId, rowId: rowId });
@@ -95,34 +93,35 @@ export default function Tokens({
   }
 
   return (
-    <Pressable onPress={handlePress} style={{ marginHorizontal: 4 }}>
+    <Pressable onPress={handlePress} style={styles.container}>
       {tokenValue === TokenValue.NONE && (
         <Image
-          source={{
-            uri: require('@/assets/images/tokens/full_blue.png'),
-            width: 50,
-            height: 50,
-          }}
-        ></Image>
+          source={require('@/assets/images/tokens/full_blue.png')}
+          style={styles.image}
+        />
       )}
       {tokenValue === TokenValue.HALF && (
         <Image
-          source={{
-            uri: require('@/assets/images/tokens/full_blue_half_selected.png'),
-            width: 50,
-            height: 50,
-          }}
-        ></Image>
+          source={require('@/assets/images/tokens/full_blue_half_selected.png')}
+          style={styles.image}
+        />
       )}
       {tokenValue === TokenValue.FULL && (
         <Image
-          source={{
-            uri: require('@/assets/images/tokens/full_blue_selected.png'),
-            width: 50,
-            height: 50,
-          }}
-        ></Image>
+          source={require('@/assets/images/tokens/full_blue_selected.png')}
+          style={styles.image}
+        />
       )}
     </Pressable>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 4,
+  },
+  image: {
+    width: 50,
+    height: 50,
+  },
+});

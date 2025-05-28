@@ -1,8 +1,7 @@
-import { Button, Dialog, Fieldset, Input, Label, Text, Unspaced, XStack } from 'tamagui';
-import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
+import { NativeSyntheticEvent, TextInputChangeEventData, Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import ButtonWithBadge from '@/components/common/ButtonWithBadge';
-import { X } from '@tamagui/lucide-icons';
 import { EventType } from '@/db/types/eventType';
+import { useState } from 'react';
 
 interface addTokenModalProps {
   event: EventType;
@@ -17,99 +16,167 @@ export default function AddExpenseModal({
   tokenExpenseInput,
   saveExpense,
 }: addTokenModalProps) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <>
-      <Dialog modal>
-        <Dialog.Trigger asChild>
-          {event && event.token_price > 0 ? (
-            <Button>Add expense</Button>
-          ) : (
-            <Button disabled opacity={0.5}>
-              Add expense
-            </Button>
-          )}
-        </Dialog.Trigger>
+      <TouchableOpacity
+        style={[
+          styles.addButton,
+          (!event || event.token_price <= 0) && styles.disabledButton
+        ]}
+        onPress={() => setModalVisible(true)}
+        disabled={!event || event.token_price <= 0}
+      >
+        <Text style={styles.buttonText}>Add expense</Text>
+      </TouchableOpacity>
 
-        <Dialog.Portal>
-          <Dialog.Overlay
-            key="overlay"
-            backgroundColor="$shadow6"
-            animateOnly={['transform', 'opacity']}
-            animation={[
-              'quicker',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-            enterStyle={{ opacity: 0, scale: 0.95 }}
-            exitStyle={{ opacity: 0 }}
-          />
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Add expense</Text>
+            <Text style={styles.modalDescription}>Consume token from your wallet</Text>
 
-          <Dialog.Content
-            bordered
-            width="95%"
-            height={'auto'}
-            elevate
-            key="content"
-            animateOnly={['transform', 'opacity']}
-            animation={[
-              'quicker',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-            enterStyle={{ x: 0, y: -20, opacity: 0 }}
-            exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-            gap="$4"
-          >
-            <Dialog.Title>Add expense</Dialog.Title>
-            <Dialog.Description>Consume token from your wallet</Dialog.Description>
-            <Fieldset gap="$4" horizontal>
-              <Label justifyContent="flex-end" htmlFor="name">
-                Number of token :
-              </Label>
-              <Input
-                keyboardType={'numeric'}
-                flex={1}
-                id="number_token"
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Number of token :</Text>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
                 placeholder="xx"
                 onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                   setTokenExpenseInput(parseInt(e.nativeEvent.text));
                 }}
               />
-            </Fieldset>
+            </View>
 
-            <Text>Your expense represent {tokenExpenseInput * event.token_price} €</Text>
-            <XStack gap="$3">
+            <Text style={styles.expenseText}>
+              Your expense represent {tokenExpenseInput * event.token_price} €
+            </Text>
+
+            <View style={styles.badgeContainer}>
               <ButtonWithBadge />
-            </XStack>
+            </View>
 
-            <XStack alignSelf="flex-end" gap="$4">
-              <Dialog.Close displayWhenAdapted asChild>
-                <Button
-                  theme="accent"
-                  aria-label="Close"
-                  onPress={() => {
-                    saveExpense();
-                  }}
-                >
-                  Save
-                </Button>
-              </Dialog.Close>
-            </XStack>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={() => {
+                  saveExpense();
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={styles.saveButtonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
 
-            <Unspaced>
-              <Dialog.Close asChild>
-                <Button position="absolute" top="$3" right="$3" size="$2" circular icon={X} />
-              </Dialog.Close>
-            </Unspaced>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              x
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  addButton: {
+    backgroundColor: '#0d6efd',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+  },
+  disabledButton: {
+    opacity: 0.5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '95%',
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  modalDescription: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 16,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  label: {
+    marginRight: 8,
+    fontSize: 16,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 4,
+    padding: 8,
+    fontSize: 16,
+  },
+  expenseText: {
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  badgeContainer: {
+    marginBottom: 16,
+  },
+  buttonContainer: {
+    alignItems: 'flex-end',
+  },
+  saveButton: {
+    backgroundColor: '#0d6efd',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+  },
+  saveButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    backgroundColor: '#dc3545',
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

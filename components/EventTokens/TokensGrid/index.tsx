@@ -1,7 +1,7 @@
-import { View } from 'tamagui';
 import TokensRow from '@/components/EventTokens/TokensRow';
 import React from 'react';
 import { TokenSelectedType } from '@/Types/TokenSelectedType';
+import { View, StyleSheet } from 'react-native';
 
 interface TokensGridProps {
   numberOfTokens: number;
@@ -25,7 +25,7 @@ export default function TokensGrid({
   isPreviousToken,
 }: TokensGridProps) {
   return (
-    <View marginTop="$4" paddingHorizontal="$2" alignItems="center">
+    <View style={styles.container}>
       {[...Array(Math.ceil(numberOfTokens / 5))].map((x, i) =>
         i === Math.ceil(numberOfTokens / 5) - 1 && numberOfTokens % 5 !== 0 ? (
           <TokensRow
@@ -58,3 +58,11 @@ export default function TokensGrid({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 16,
+    paddingHorizontal: 8,
+    alignItems: 'center',
+  },
+});
